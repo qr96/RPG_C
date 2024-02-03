@@ -39,8 +39,6 @@ class PacketHandler
 	{
 		S_Move movePacket = packet as S_Move;
 
-        Debug.Log(movePacket.PosInfo.PosX);
-
         GameObject go = Managers.Object.FindById(movePacket.ObjectId);
 		if (go == null)
 			return;
@@ -55,8 +53,8 @@ class PacketHandler
         }
 		else
 		{
-            //PlayerController pc = go.GetComponent<PlayerController>();
-            //pc.desPos = new Vector2(movePacket.PosInfo.PosX, movePacket.PosInfo.PosY);
+			OtherPlayer op = go.GetComponent<OtherPlayer>();
+			op.SetDesPos(new Vector3(movePacket.PosInfo.PosX, movePacket.PosInfo.PosY, movePacket.PosInfo.PosZ));
         }
     }
 

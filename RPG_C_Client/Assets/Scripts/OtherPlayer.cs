@@ -6,14 +6,14 @@ public class OtherPlayer : MonoBehaviour
 {
     public int ID;
 
-    // Must Move to Server
-    public float speed = 200f;
+    public float speed = 1f;
+    public float rotateSpeed = 2f;
 
     Rigidbody rigid;
     GameObject avatar;
     Animator animator;
 
-    Vector3 desPos;
+    public Vector3 desPos;
 
     private void Awake()
     {
@@ -22,12 +22,15 @@ public class OtherPlayer : MonoBehaviour
         animator = avatar.GetComponent<Animator>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (desPos != Vector3.zero)
         {
-            rigid.MovePosition(Vector3.Lerp(transform.position, RBUtil.InsertY(desPos, transform.position.y), Time.deltaTime * speed));
-            transform.rotation = Quaternion.LookRotation(RBUtil.RemoveY(desPos - transform.position));
+            transform.position = Vector3.Lerp(transform.position, desPos, Time.deltaTime * speed);
+            //rigid.MovePosition(Vector3.Lerp(transform.position, RBUtil.InsertY(desPos, transform.position.y), Time.deltaTime * speed));
+            var lookVec = RBUtil.RemoveY(desPos - transform.position);
+            if (lookVec != Vector3.zero)
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookVec), Time.deltaTime * rotateSpeed);
 
             if (RBUtil.RemoveY(desPos - transform.position).sqrMagnitude > 1f)
                 animator.Play("Move");
