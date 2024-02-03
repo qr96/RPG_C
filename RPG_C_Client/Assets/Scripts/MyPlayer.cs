@@ -57,7 +57,7 @@ public class MyPlayer : MonoBehaviour
 
             if (input.x != 0 || input.y != 0)
             {
-                animator.Play("Run");
+                animator.Play("Move");
                 transform.rotation = Quaternion.LookRotation(new Vector3(input.x, 0f, input.y));
             }
             else

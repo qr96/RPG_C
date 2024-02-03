@@ -35,14 +35,13 @@ public class Enemy : MonoBehaviour
 
     public Vector3 desPos;
 
-    public GuageBar hpBar;
+    GuageBar hpBar;
     public GameObject deathEffect;
 
     Rigidbody rigid;
     GameObject body;
     Animator animator;
 
-    float knockBackSpeed = 5f;
     public float hpBarDuration = 5f;
     DateTime hideHpBarTime;
 
@@ -76,7 +75,7 @@ public class Enemy : MonoBehaviour
             () =>
             {
                 if (DateTime.Now > moveTime)
-                    sm.SetState(MonsterState.Move);
+                    sm.SetState(MonsterState.Idle);
             });
         sm.SetEvent(MonsterState.Chase, null,
             () =>
@@ -105,6 +104,7 @@ public class Enemy : MonoBehaviour
         var lookVec = RBUtil.RemoveY(desPos - transform.position);
         if (lookVec != Vector3.zero && sm.GetState() != MonsterState.Damaged)
             transform.rotation = Quaternion.LookRotation(lookVec);
+        transform.position = Vector3.MoveTowards(transform.position, RBUtil.InsertY(desPos, transform.position.y), Time.deltaTime * moveSpeed);
 
         if (RBUtil.RemoveY(desPos - transform.position).sqrMagnitude > 1f)
             animator.Play("Move");
@@ -123,6 +123,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /*
     private void FixedUpdate()
     {
         if (sm.GetState() == MonsterState.Damaged)
@@ -130,6 +131,7 @@ public class Enemy : MonoBehaviour
         else
             rigid.MovePosition(Vector3.Lerp(transform.position, new Vector3(desPos.x, transform.position.y, desPos.z), Time.fixedDeltaTime * moveSpeed));
     }
+    */
 
     void ShowDamageText(long damage)
     {

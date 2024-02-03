@@ -22,12 +22,11 @@ public class OtherPlayer : MonoBehaviour
         animator = avatar.GetComponent<Animator>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (desPos != Vector3.zero)
         {
             transform.position = Vector3.Lerp(transform.position, desPos, Time.deltaTime * speed);
-            //rigid.MovePosition(Vector3.Lerp(transform.position, RBUtil.InsertY(desPos, transform.position.y), Time.deltaTime * speed));
             var lookVec = RBUtil.RemoveY(desPos - transform.position);
             if (lookVec != Vector3.zero)
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookVec), Time.deltaTime * rotateSpeed);
