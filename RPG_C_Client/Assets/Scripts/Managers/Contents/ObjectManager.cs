@@ -30,14 +30,14 @@ public class ObjectManager
         }
 		else if (objectType == GameObjectType.Monster)
 		{
-			GameObject go = Managers.Resource.Instantiate("Creature/BaseMonster");
+			GameObject go = Managers.Resource.Instantiate("Creature/Monster");
 			go.name = info.Name;
 			_objects.Add(info.ObjectId, go);
 
-			MonsterController mc = go.GetComponent<MonsterController>();
-			mc.id = info.ObjectId;
-			mc.transform.position = new Vector2(info.PosInfo.PosX, info.PosInfo.PosY);
-			mc.SetDesPos(mc.transform.position);
+			//MonsterController mc = go.GetComponent<MonsterController>();
+			//mc.id = info.ObjectId;
+			//mc.transform.position = new Vector2(info.PosInfo.PosX, info.PosInfo.PosY);
+			//mc.SetDesPos(mc.transform.position);
 		}
 	}
 

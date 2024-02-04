@@ -857,7 +857,6 @@ MonoBehaviour:
   maxChaseDis: 400
   knockBackDelay: 0.5
   desPos: {x: 1.57, y: 2.51, z: 0}
-  hpBar: {fileID: 0}
   deathEffect: {fileID: 1101866687}
   hpBarDuration: 5
 --- !u!4 &314195254
@@ -1372,7 +1371,6 @@ MonoBehaviour:
   maxChaseDis: 400
   knockBackDelay: 0.5
   desPos: {x: 1.57, y: 2.51, z: 0}
-  hpBar: {fileID: 0}
   deathEffect: {fileID: 1101866687}
   hpBarDuration: 5
 --- !u!4 &423330896
@@ -3795,7 +3793,7 @@ PrefabInstance:
     - target: {fileID: 4721953008865906184, guid: 000570bf18c23ef47968811b73cd0ca3,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4937734731404489499, guid: 000570bf18c23ef47968811b73cd0ca3,
         type: 3}

@@ -26,7 +26,8 @@ namespace Server.Game
 		{
 			//Map.LoadMap(mapId);
 
-            //EnterGame(cm);
+			Monster monster = ObjectManager.Instance.Add<Monster>();
+			EnterGame(monster);
         }
 
 		// 누군가 주기적으로 호출해줘야 한다
@@ -36,6 +37,9 @@ namespace Server.Game
 			{
 				player.Update();
 			}
+
+			foreach (var monster in _monsters.Values)
+				monster.Update();
 
 			Flush();
 		}
@@ -66,7 +70,7 @@ namespace Server.Game
 							spawnPacket.Objects.Add(p.Info);
 					}
 
-					foreach (var m in _baseMonsters)
+					foreach (var m in _monsters.Values)
 						spawnPacket.Objects.Add(m.Info);
 
 					player.Session.Send(spawnPacket);
@@ -74,12 +78,11 @@ namespace Server.Game
 			}
 			else if (type == GameObjectType.Monster)
 			{
-                /*
-				BaseMonster monster = gameObject as BaseMonster;
-				_baseMonsters.Add(monster);
+				Monster monster = gameObject as Monster;
+				_monsters.Add(monster.Id, monster);
 				monster.Room = this;
-				*/
-			}
+                monster.Init();
+            }
 
 			// 타인한테 정보 전송
 			{

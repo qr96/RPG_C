@@ -48,8 +48,7 @@ class PacketHandler
 
 		if (ObjectManager.GetObjectTypeById(movePacket.ObjectId) == GameObjectType.Monster)
 		{
-			MonsterController mc = go.GetComponent<MonsterController>();
-			mc.SetDesPos(new Vector2(movePacket.PosInfo.PosX, movePacket.PosInfo.PosY));
+			go.transform.position = RBUtil.InsertY(RBUtil.PosToVector3(movePacket.PosInfo), go.transform.position.y);
         }
 		else
 		{

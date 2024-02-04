@@ -27,24 +27,11 @@ enum CreatureState {
   DEAD = 3;
 }
 
-enum MoveDir {
-  UP = 0;
-  DOWN = 1;
-  LEFT = 2;
-  RIGHT = 3;
-}
-
 enum GameObjectType {
   NONE = 0;
   PLAYER = 1;
   MONSTER = 2;
   PROJECTILE = 3;
-}
-
-enum SkillType {
-  SKILL_NONE = 0;
-  SKILL_AUTO = 1;
-  SKILL_PROJECTILE = 2;
 }
 
 message S_EnterGame {
@@ -95,6 +82,9 @@ message S_Die {
 message S_MonsterState{
 	int32 objectId = 1;
 	int32 state = 2;
+	PositionInfo nowPos = 3;
+	PositionInfo moveVec = 4;
+	int32 targetId = 5;
 }
 
 message ObjectInfo {
