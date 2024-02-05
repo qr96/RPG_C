@@ -18,7 +18,7 @@ namespace Server.Game
         {
             ObjectType = GameObjectType.Monster;
 
-            maxHP = 1000;
+            maxHP = 100;
             nowHP = maxHP;
             power = 1;
         }

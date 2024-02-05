@@ -115,6 +115,20 @@ public class Monster : MonoBehaviour
         });
     }
 
+    void OnDead()
+    {
+        EffectPool.Instance.ShowDeadEffect(transform.position);
+
+        // hpBar ¹ÝÈ¯
+        if (hpBar != null)
+        {
+            UIManager.Instance.ReturnOtherHPBar(hpBar);
+            hpBar = null;
+        }
+
+        gameObject.SetActive(false);
+    }
+
     public void RecvMonsterState(S_MonsterState monsterState)
     {
         sm.SetState((MonsterState)monsterState.State);
@@ -151,5 +165,8 @@ public class Monster : MonoBehaviour
         }
         hpBar.SetAmount(nowHp, maxHp);
         ShowDamageText(damage);
+
+        if (nowHp <= 0)
+            OnDead();
     }
 }
