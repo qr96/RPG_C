@@ -27,6 +27,7 @@ namespace Server.Game
 			//Map.LoadMap(mapId);
 
 			Monster monster = ObjectManager.Instance.Add<Monster>();
+			monster.Info.PosInfo = new PositionInfo() { PosX = 6f, PosY = 0f, PosZ = 5f };
 			EnterGame(monster);
         }
 
@@ -73,7 +74,7 @@ namespace Server.Game
 					foreach (var m in _monsters.Values)
 						spawnPacket.Objects.Add(m.Info);
 
-					player.Session.Send(spawnPacket);
+                    player.Session.Send(spawnPacket);
 				}
 			}
 			else if (type == GameObjectType.Monster)
@@ -81,7 +82,6 @@ namespace Server.Game
 				Monster monster = gameObject as Monster;
 				_monsters.Add(monster.Id, monster);
 				monster.Room = this;
-                monster.Init();
             }
 
 			// 타인한테 정보 전송
@@ -142,6 +142,7 @@ namespace Server.Game
 				return;
 
 			player.PosInfo = movePacket.PosInfo;
+			player.Info.PosInfo = movePacket.PosInfo;
 
 			// 다른 플레이어한테도 알려준다
 			S_Move resMovePacket = new S_Move();
@@ -156,14 +157,16 @@ namespace Server.Game
 			if (player == null)
 				return;
 
-			ObjectInfo info = player.Info;
+			if (player.CheckSkillCool(skillPacket.SkillId))
+			{
+				Monster monster;
+				if (!_monsters.TryGetValue(skillPacket.TargetId, out monster))
+					return;
 
-			// TODO : 스킬 사용 가능 여부 체크
-			//info.PosInfo.State = CreatureState.Skill;
-			S_Skill skill = new S_Skill() { Info = new SkillInfo() };
-			skill.ObjectId = info.ObjectId;
-			skill.Info.SkillId = skillPacket.Info.SkillId;
-			Broadcast(skill);
+				player.UseSkill(skillPacket.SkillId);
+				if (skillPacket.SkillId == 1)
+					monster.OnDamaged(player, 10);
+            }
 		}
 
 		public Player FindPlayer(Func<Player, bool> condition)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MyPlayer : MonoBehaviour
 {
-    public int ID;
+    public int Id;
 
     // Must Move to Server
     public float speed;
@@ -34,7 +34,6 @@ public class MyPlayer : MonoBehaviour
 
     private void Start()
     {
-        Managers.Object.MyPlayer = this;
         StartCoroutine(SendMoveCo());
         //UIManager.Instance.SetPlayerHPBar(nowHP, maxHP);
         //UIManager.Instance.SetPlayerEXPBar(nowEXP, maxEXP);
@@ -71,7 +70,7 @@ public class MyPlayer : MonoBehaviour
     {
         if (collision.transform.tag == "Enemy" && DateTime.Now >= attackEnd)
         {
-            var enemy = collision.transform.GetComponent<Enemy>();
+            var enemy = collision.transform.GetComponent<Monster>();
             var enemyVec = RBUtil.RemoveY(enemy.transform.position - transform.position);
             var inputVec = new Vector3(input.x, 0f, input.y);
 
@@ -81,11 +80,15 @@ public class MyPlayer : MonoBehaviour
             if (input.x == 0 && input.y == 0)
             {
                 transform.rotation = Quaternion.LookRotation(enemyVec);
-                enemy.OnDamaged(enemyVec, attack, this);
+                SendSkill(1, enemy.Id);
+                enemy.OnDamagedClient(gameObject, enemyVec);
             }
             else
-                enemy.OnDamaged(inputVec, attack, this);
-
+            {
+                SendSkill(1, enemy.Id);
+                enemy.OnDamagedClient(gameObject, inputVec);
+            }
+            
             animator.Play("Attack");
             attackEnd = DateTime.Now.AddSeconds(attackDelay);
             rigid.velocity = Vector3.zero;
@@ -106,12 +109,11 @@ public class MyPlayer : MonoBehaviour
 
     #region packet
 
-    private void SendSkill(int skillId, bool facingRight, Vector2 pos)
+    private void SendSkill(int skillId, int targetId)
     {
-        C_Skill skill = new C_Skill() { Info = new SkillInfo() };
-        skill.Info.SkillId = skillId;
-        skill.Position = new PositionInfo() { PosX = pos.x, PosY = pos.y };
-        skill.FacingRight = facingRight;
+        C_Skill skill = new C_Skill();
+        skill.SkillId = skillId;
+        skill.TargetId = targetId;
         Managers.Network.Send(skill);
     }
 

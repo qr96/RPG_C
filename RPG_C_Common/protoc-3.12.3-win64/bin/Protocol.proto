@@ -13,11 +13,9 @@ enum MsgId {
   S_MOVE = 5;
   C_SKILL = 6;
   S_SKILL = 7;
-  S_CHANGE_HP = 8;
-  S_DIE = 9;
-  C_MOVE_COMMAND = 10;
-  S_MOVE_COMMAND = 11;
-  S_MONSTER_STATE = 12;
+  S_ONDAMAGE = 8;
+  S_CHANGE_STATUS = 9;
+  S_MONSTER_STATE = 10;
 }
 
 enum CreatureState {
@@ -50,33 +48,42 @@ message S_Despawn {
 }
 
 message C_Move {
-  PositionInfo posInfo = 1;
+	PositionInfo posInfo = 1;
 }
 
 message S_Move {
-  int32 objectId = 1;
-  PositionInfo posInfo = 2;
+	int32 objectId = 1;
+	PositionInfo posInfo = 2;
 }
 
 message C_Skill {
-  SkillInfo info = 1;
-  PositionInfo position = 2;
-  bool facingRight = 3;
+	int32 skillId = 1;
+	int32 targetId = 2;
 }
 
 message S_Skill {
-  int32 objectId = 1;
-  SkillInfo info = 2;
+	int32 objectId = 1;
+	int32 skillID = 2;
+	int32 targetId = 3;
 }
 
-message S_ChangeHp {
-  int32 objectId = 1;
-  int32 hp = 2;
+message S_Ondamage {
+	int32 objectId = 1;
+	int32 attackerId = 2;
+	int64 damage = 3;
+	int64 remainHp = 4;
+	int64 maxHp = 5;
 }
 
-message S_Die {
-  int32 objectId = 1;
-  int32 attackerId = 2;
+message S_ChangeStatus{
+	int32 objectId = 1;
+	int32 level = 2;
+	int64 maxHp = 3;
+	int64 nowHp = 4;
+	int64 maxMp = 5;
+	int64 nowMp = 6;
+	int64 maxExp = 7;
+	int64 nowExp = 8;
 }
 
 message S_MonsterState{
@@ -107,8 +114,4 @@ message StatInfo {
   int32 attack = 4;
   float speed = 5;
   int32 totalExp = 6;
-}
-
-message SkillInfo {
-  int32 skillId = 1;
 }

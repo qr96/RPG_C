@@ -20,13 +20,22 @@ public class ObjectManager
 		GameObjectType objectType = GetObjectTypeById(info.ObjectId);
 		if (objectType == GameObjectType.Player)
 		{
-            GameObject go = Managers.Resource.Instantiate("Creature/Player");
-            go.name = info.Name;
-            _objects.Add(info.ObjectId, go);
-			go.transform.position = RBUtil.PosToVector3(info.PosInfo);
+            if (myPlayer)
+            {
+                GameObject go = Managers.Resource.Instantiate("Creature/MyPlayer");
+                go.name = info.Name;
+                _objects.Add(info.ObjectId, go);
 
-            //PlayerController rpc = go.GetComponent<PlayerController>();
-            //rpc.id = info.ObjectId;
+                MyPlayer = go.GetComponent<MyPlayer>();
+                MyPlayer.Id = info.ObjectId;
+            }
+            else
+            {
+                GameObject go = Managers.Resource.Instantiate("Creature/Player");
+                go.name = info.Name;
+                _objects.Add(info.ObjectId, go);
+                go.transform.position = RBUtil.PosToVector3(info.PosInfo);
+            }
         }
 		else if (objectType == GameObjectType.Monster)
 		{
@@ -34,11 +43,11 @@ public class ObjectManager
 			go.name = info.Name;
 			_objects.Add(info.ObjectId, go);
 
-			//MonsterController mc = go.GetComponent<MonsterController>();
-			//mc.id = info.ObjectId;
-			//mc.transform.position = new Vector2(info.PosInfo.PosX, info.PosInfo.PosY);
-			//mc.SetDesPos(mc.transform.position);
-		}
+			Monster monster = go.GetComponent<Monster>();
+			monster.Id = info.ObjectId;
+			monster.transform.position = new Vector3(info.PosInfo.PosX, monster.transform.position.y, info.PosInfo.PosZ);
+			monster.desPos = monster.transform.position;
+        }
 	}
 
 	public void Remove(int id)

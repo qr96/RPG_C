@@ -10,7 +10,7 @@ class PacketHandler
 	public static void S_EnterGameHandler(PacketSession session, IMessage packet)
 	{
 		S_EnterGame enterGamePacket = packet as S_EnterGame;
-		//Managers.Object.Add(enterGamePacket.Player, myPlayer: true);
+		Managers.Object.Add(enterGamePacket.Player, myPlayer: true);
 	}
 
 	public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
@@ -43,7 +43,7 @@ class PacketHandler
 		if (go == null)
 			return;
 
-		if (Managers.Object.MyPlayer.ID == movePacket.ObjectId)
+		if (Managers.Object.MyPlayer.Id == movePacket.ObjectId)
 			return;
 
 		if (ObjectManager.GetObjectTypeById(movePacket.ObjectId) == GameObjectType.Monster)
@@ -65,7 +65,7 @@ class PacketHandler
 		if (go == null)
 			return;
 
-		if (Managers.Object.MyPlayer.ID == skillPacket.ObjectId)
+		if (Managers.Object.MyPlayer.Id == skillPacket.ObjectId)
             return;
 
         //PlayerController cc = go.GetComponent<PlayerController>();
@@ -75,36 +75,22 @@ class PacketHandler
 		//}
 	}
 
-	public static void S_ChangeHpHandler(PacketSession session, IMessage packet)
+	public static void S_OnDamageHandler(PacketSession session, IMessage packet)
 	{
-		S_ChangeHp changePacket = packet as S_ChangeHp;
+		S_Ondamage damagePacket = packet as S_Ondamage;
 
-		GameObject go = Managers.Object.FindById(changePacket.ObjectId);
-		if (go == null)
+        GameObject go = Managers.Object.FindById(damagePacket.ObjectId);
+        if (go == null)
+            return;
+
+		Monster monster = go.GetComponent<Monster>();
+		if (monster == null)
 			return;
 
-		CreatureController cc = go.GetComponent<CreatureController>();
-		if (cc != null)
-		{
-			//cc.Hp = changePacket.Hp;
-		}
-	}
+		GameObject attacker = Managers.Object.FindById(damagePacket.AttackerId);
 
-	public static void S_DieHandler(PacketSession session, IMessage packet)
-	{
-		S_Die diePacket = packet as S_Die;
-
-		GameObject go = Managers.Object.FindById(diePacket.ObjectId);
-		if (go == null)
-			return;
-
-		CreatureController cc = go.GetComponent<CreatureController>();
-		if (cc != null)
-		{
-			//cc.Hp = 0;
-			//cc.OnDead();
-		}
-	}
+		monster.OnDamagedServer(attacker, damagePacket.Damage, damagePacket.RemainHp, damagePacket.MaxHp);
+    }
 
 	public static void S_MonsterStateHandler(PacketSession session, IMessage packet)
 	{
@@ -116,8 +102,8 @@ class PacketHandler
 
 		if (ObjectManager.GetObjectTypeById(statePacket.ObjectId) == GameObjectType.Monster)
 		{
-            var mc = go.GetComponent<MonsterController>();
-            mc.Attacked();
+            var monster = go.GetComponent<Monster>();
+			monster.RecvMonsterState(statePacket);
         }
     }
 }

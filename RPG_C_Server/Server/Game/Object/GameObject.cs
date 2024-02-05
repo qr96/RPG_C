@@ -46,6 +46,7 @@ namespace Server.Game
 
 		public virtual void OnDamaged(GameObject attacker, int damage)
 		{
+			/*
 			if (Room == null)
 				return;
 
@@ -60,17 +61,13 @@ namespace Server.Game
 			{
 				OnDead(attacker);
 			}
+			*/
 		}
 
 		public virtual void OnDead(GameObject attacker)
 		{
 			if (Room == null)
 				return;
-
-			S_Die diePacket = new S_Die();
-			diePacket.ObjectId = Id;
-			diePacket.AttackerId = attacker.Id;
-			Room.Broadcast(diePacket);
 
 			GameRoom room = Room;
 			room.LeaveGame(Id);

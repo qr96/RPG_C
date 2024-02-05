@@ -11,6 +11,18 @@ namespace Server.Game
 	{
 		public ClientSession Session { get; set; }
 
+		// 스킬 사용불가한 시간 딕셔너리
+		Dictionary<int, DateTime> skillCoolTimes = new Dictionary<int, DateTime>();
+
+        // 능력치
+        int level;
+        long maxHp;
+		long nowHp;
+		long maxMp;
+		long nowMp;
+		long maxExp;
+		long nowExp;
+		
 		public Player()
 		{
 			ObjectType = GameObjectType.Player;
@@ -30,5 +42,19 @@ namespace Server.Game
 		{
 			base.OnDead(attacker);
 		}
+
+		public bool CheckSkillCool(int skillId)
+		{
+			if (!skillCoolTimes.ContainsKey(skillId)) return true;
+			return DateTime.Now > skillCoolTimes[skillId];
+		}
+
+		public void UseSkill(int skillId)
+		{
+			if (!skillCoolTimes.ContainsKey(skillId))
+				skillCoolTimes.Add(skillId, DateTime.Now);
+			else
+				skillCoolTimes[skillId] = DateTime.Now;
+        }
 	}
 }

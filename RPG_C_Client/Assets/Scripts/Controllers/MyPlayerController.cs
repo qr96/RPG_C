@@ -177,11 +177,7 @@ public class MyPlayerController : MonoBehaviour
 
     private void SendSkill(int skillId, bool facingRight, Vector2 pos)
     {
-        C_Skill skill = new C_Skill() { Info = new SkillInfo() };
-        skill.Info.SkillId = skillId;
-        skill.Position = new PositionInfo() { PosX = pos.x, PosY = pos.y };
-        skill.FacingRight = facingRight;
-        Managers.Network.Send(skill);
+
     }
 
     #endregion
