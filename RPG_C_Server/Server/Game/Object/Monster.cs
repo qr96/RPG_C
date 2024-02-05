@@ -19,10 +19,11 @@ namespace Server.Game
             ObjectType = GameObjectType.Monster;
 
             maxHP = 1000;
-            nowHP = maxHP; 
+            nowHP = maxHP;
+            power = 1;
         }
 
-        public void OnDamaged(Player attacker, int damage)
+        public void OnDamaged(Player attacker, long damage)
         {
             if (Room == null) return;
 
@@ -35,6 +36,8 @@ namespace Server.Game
             packet.RemainHp = nowHP;
             packet.MaxHp = maxHP;
             Room.Broadcast(packet);
+
+            attacker.OnDamaged(this, power);
         }
     }
 }

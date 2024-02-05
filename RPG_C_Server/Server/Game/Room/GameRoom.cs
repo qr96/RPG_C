@@ -75,6 +75,8 @@ namespace Server.Game
 						spawnPacket.Objects.Add(m.Info);
 
                     player.Session.Send(spawnPacket);
+					player.Spawn();
+					player.SendStatInfo();
 				}
 			}
 			else if (type == GameObjectType.Monster)
@@ -166,6 +168,7 @@ namespace Server.Game
 				player.UseSkill(skillPacket.SkillId);
 				if (skillPacket.SkillId == 1)
 					monster.OnDamaged(player, 10);
+				player.SendStatInfo();
             }
 		}
 

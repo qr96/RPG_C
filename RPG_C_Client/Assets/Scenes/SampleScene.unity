@@ -456,8 +456,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d9f574a01caf74898f9cb6b8ae596c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInfo: {fileID: 0}
-  playerHPBar: {fileID: 0}
 --- !u!1 &314195250
 GameObject:
   m_ObjectHideFlags: 0
@@ -3165,7 +3163,7 @@ GameObject:
   - component: {fileID: 1941346447}
   - component: {fileID: 1941346446}
   m_Layer: 5
-  m_Name: Nnumber
+  m_Name: Number
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

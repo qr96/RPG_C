@@ -17,25 +17,32 @@ namespace Server.Game
         // 능력치
         int level;
         long maxHp;
-		long nowHp;
 		long maxMp;
-		long nowMp;
-		long maxExp;
+        long maxExp;
+
+        long nowHp;
+        long nowMp;
 		long nowExp;
 		
 		public Player()
 		{
 			ObjectType = GameObjectType.Player;
+
+			level = 1;
+			maxHp = 100;
+			maxMp = 100;
+			maxExp = 100;
 		}
 
-        public override void Update()
-        {
-
-        }
-
-        public override void OnDamaged(GameObject attacker, int damage)
+		public void Spawn()
 		{
-			base.OnDamaged(attacker, damage);
+			nowHp = maxHp;
+			nowMp = maxMp;
+		}
+
+        public override void OnDamaged(GameObject attacker, long damage)
+		{
+			nowHp -= damage;
 		}
 
 		public override void OnDead(GameObject attacker)
@@ -55,6 +62,23 @@ namespace Server.Game
 				skillCoolTimes.Add(skillId, DateTime.Now);
 			else
 				skillCoolTimes[skillId] = DateTime.Now;
+
+			nowMp -= 1;
         }
+
+		public void SendStatInfo()
+		{
+			S_ChangeStatus packet = new S_ChangeStatus();
+			packet.ObjectId = Id;
+			packet.Level = level;
+			packet.MaxHp = maxHp;
+			packet.MaxMp = maxMp;
+			packet.MaxExp = maxExp;
+			packet.NowHp = nowHp;
+			packet.NowMp = nowMp;
+			packet.NowExp = nowExp;
+
+			Session.Send(packet);
+		}
 	}
 }

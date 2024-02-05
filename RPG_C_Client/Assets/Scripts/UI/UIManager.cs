@@ -7,8 +7,9 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public GameObject playerInfo;
-    public GuageBar playerHPBar;
+    GameObject playerInfo;
+    TMP_Text playerLevel;
+    GuageBar playerHPBar;
     GuageBar playerMPBar;
     GuageBar playerEXPBar;
 
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
 
         playerInfo = transform.Find("PlayerInfo").gameObject;
+        playerLevel = playerInfo.transform.Find("Level").GetComponentInChildren<TMP_Text>();
         playerHPBar = playerInfo.transform.Find("HPBar").GetComponent<GuageBar>();
         playerMPBar = playerInfo.transform.Find("MPBar").GetComponent <GuageBar>();
         playerEXPBar = transform.Find("EXPBar").GetComponentInChildren<GuageBar>();
@@ -33,9 +35,21 @@ public class UIManager : MonoBehaviour
         damageText = transform.Find("DamageText").GetComponent<TMP_Text>();
     }
 
+
+
+    public void SetPlayerLevel(int level)
+    {
+        playerLevel.text = level.ToString();
+    }
+
     public void SetPlayerHPBar(long nowHP, long maxHP)
     {
         playerHPBar.SetAmount(nowHP, maxHP);
+    }
+
+    public void SetPlayerMPBar(long nowMP, long maxMP)
+    {
+        playerMPBar.SetAmount(nowMP, maxMP);
     }
 
     public void SetPlayerEXPBar(long nowEXP, long maxEXP)
@@ -43,6 +57,7 @@ public class UIManager : MonoBehaviour
         playerEXPBar.SetAmount(nowEXP, maxEXP);
     }
 
+    // Pooling
     public GuageBar RentOtherHPBar()
     {
         if (otherHPBars.Count > 0)

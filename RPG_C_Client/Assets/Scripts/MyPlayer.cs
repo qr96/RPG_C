@@ -131,12 +131,12 @@ public class MyPlayer : MonoBehaviour
         //Server
         nowHP -= damage;
 
-        UIManager.Instance.SetPlayerHPBar(nowHP, maxHP);
+        //UIManager.Instance.SetPlayerHPBar(nowHP, maxHP);
     }
 
     public void AddEXP(long exp)
     {
         nowEXP += exp;
-        UIManager.Instance.SetPlayerEXPBar(nowEXP, maxEXP);
+        //UIManager.Instance.SetPlayerEXPBar(nowEXP, maxEXP);
     }
 }

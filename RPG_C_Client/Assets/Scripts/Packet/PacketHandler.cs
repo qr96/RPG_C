@@ -92,7 +92,17 @@ class PacketHandler
 		monster.OnDamagedServer(attacker, damagePacket.Damage, damagePacket.RemainHp, damagePacket.MaxHp);
     }
 
-	public static void S_MonsterStateHandler(PacketSession session, IMessage packet)
+	public static void S_S_ChangeStatusHandler(PacketSession session, IMessage packet)
+	{
+        S_ChangeStatus statusPacket = packet as S_ChangeStatus;
+		UIManager.Instance.SetPlayerLevel(statusPacket.Level);
+		UIManager.Instance.SetPlayerHPBar(statusPacket.NowHp, statusPacket.MaxHp);
+		UIManager.Instance.SetPlayerMPBar(statusPacket.NowMp, statusPacket.MaxMp);
+		UIManager.Instance.SetPlayerEXPBar(statusPacket.NowExp, statusPacket.MaxExp);
+    }
+
+
+    public static void S_MonsterStateHandler(PacketSession session, IMessage packet)
 	{
         S_MonsterState statePacket = packet as S_MonsterState;
 

@@ -37,7 +37,9 @@ class PacketManager
 		_handler.Add((ushort)MsgId.SSkill, PacketHandler.S_SkillHandler);
         _onRecv.Add((ushort)MsgId.SOndamage, MakePacket<S_Ondamage>);
 		_handler.Add((ushort)MsgId.SOndamage, PacketHandler.S_OnDamageHandler);
-		_onRecv.Add((ushort)MsgId.SMonsterState, MakePacket<S_MonsterState>);
+        _onRecv.Add((ushort)MsgId.SChangeStatus, MakePacket<S_ChangeStatus>);
+        _handler.Add((ushort)MsgId.SChangeStatus, PacketHandler.S_S_ChangeStatusHandler);
+        _onRecv.Add((ushort)MsgId.SMonsterState, MakePacket<S_MonsterState>);
 		_handler.Add((ushort)MsgId.SMonsterState, PacketHandler.S_MonsterStateHandler);
     }
 

@@ -44,7 +44,7 @@ namespace Server.Game
 
 		}
 
-		public virtual void OnDamaged(GameObject attacker, int damage)
+		public virtual void OnDamaged(GameObject attacker, long damage)
 		{
 			/*
 			if (Room == null)
