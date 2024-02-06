@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4811179814998719215}
   - component: {fileID: 5137046375511411541}
   - component: {fileID: 3552995262324016338}
+  - component: {fileID: 7404675441688945153}
   m_Layer: 8
   m_Name: Monster
   m_TagString: Enemy
@@ -121,12 +122,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72a973072c355cd45867b1ecf22abcb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  Id: 0
   speed: 2
-  pushPower: 0.5
+  pushPower: 3
   hpBarDuration: 5
-  knockBackDuration: 0.5
-  moveVec: {x: 0, y: 0, z: 0}
+  knockBackDuration: 0.8
+  desPos: {x: 0, y: 0, z: 0}
+--- !u!114 &7404675441688945153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4721953008865906184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c2e5580886343041a5e74b1712b0682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsUsing: 0
 --- !u!1001 &3444330438249999856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155,11 +169,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 1116371902028168016, guid: 4a46e821c58b5cd42b14eaab6d197266,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 69ce5dd747afb75488c00ed0f554f1d6, type: 2}
     - target: {fileID: 1213550671889448607, guid: 4a46e821c58b5cd42b14eaab6d197266,
         type: 3}
       propertyPath: m_Layer

@@ -18,6 +18,9 @@ namespace Server.Game
 		Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
 		List<BaseMonster> _baseMonsters = new List<BaseMonster>();
 
+		DateTime respawnTime = DateTime.MinValue;
+		float respawnDelay = 10f;
+
 		public Random rand = new Random();
 
 		public Map Map { get; private set; } = new Map();
@@ -26,9 +29,15 @@ namespace Server.Game
 		{
 			//Map.LoadMap(mapId);
 
-			Monster monster = ObjectManager.Instance.Add<Monster>();
-			monster.Info.PosInfo = new PositionInfo() { PosX = 6f, PosY = 0f, PosZ = 5f };
-			EnterGame(monster);
+			Monster monster0 = ObjectManager.Instance.Add<Monster>();
+			monster0.Info.PosInfo = new PositionInfo() { PosX = 6f, PosY = 0f, PosZ = 5f };
+            Monster monster1 = ObjectManager.Instance.Add<Monster>();
+            monster1.Info.PosInfo = new PositionInfo() { PosX = 3f, PosY = 0f, PosZ = 1f };
+            Monster monster2 = ObjectManager.Instance.Add<Monster>();
+            monster2.Info.PosInfo = new PositionInfo() { PosX = 10f, PosY = 0f, PosZ = -4f };
+            EnterGame(monster0);
+            EnterGame(monster1);
+            EnterGame(monster2);
         }
 
 		// 누군가 주기적으로 호출해줘야 한다
@@ -39,8 +48,21 @@ namespace Server.Game
 				player.Update();
 			}
 
-			foreach (var monster in _monsters.Values)
-				monster.Update();
+			if (DateTime.Now > respawnTime)
+			{
+				respawnTime = DateTime.Now.AddSeconds(respawnDelay);
+
+				S_Spawn spawnPacket = new S_Spawn();
+				foreach (var monster in _monsters.Values)
+				{
+					if (monster.PossibleRespawn())
+					{
+                        monster.Spawn();
+						spawnPacket.Objects.Add(monster.Info);
+                    }
+				}
+                Broadcast(spawnPacket);
+            }
 
 			Flush();
 		}
@@ -83,6 +105,7 @@ namespace Server.Game
 			{
 				Monster monster = gameObject as Monster;
 				_monsters.Add(monster.Id, monster);
+				monster.Spawn();
 				monster.Room = this;
             }
 
@@ -164,10 +187,8 @@ namespace Server.Game
 				Monster monster;
 				if (!_monsters.TryGetValue(skillPacket.TargetId, out monster))
 					return;
-
-				player.UseSkill(skillPacket.SkillId);
-				if (skillPacket.SkillId == 1)
-					monster.OnDamaged(player, 10);
+				
+				player.UseSkill(skillPacket.SkillId, monster);
 				player.SendStatInfo();
             }
 		}

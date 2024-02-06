@@ -39,12 +39,12 @@ namespace Server.Game
 			Info.StatInfo = Stat;
 		}
 
-		public virtual void Update()
-		{
+        public virtual void Update()
+        {
 
-		}
+        }
 
-		public virtual void OnDamaged(GameObject attacker, long damage)
+        public virtual void OnDamaged(GameObject attacker, long damage)
 		{
 			/*
 			if (Room == null)

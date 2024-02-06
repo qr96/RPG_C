@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
+using System.Threading;
 
 namespace Server.Game
 {
@@ -56,15 +57,31 @@ namespace Server.Game
 			return DateTime.Now > skillCoolTimes[skillId];
 		}
 
-		public void UseSkill(int skillId)
+		public void UseSkill(int skillId, Monster target)
 		{
 			if (!skillCoolTimes.ContainsKey(skillId))
 				skillCoolTimes.Add(skillId, DateTime.Now);
 			else
 				skillCoolTimes[skillId] = DateTime.Now;
 
-			nowMp -= 1;
+            nowMp -= 1;
+
+			if (skillId == 1)
+				target.OnDamaged(this, level * 2);
         }
+
+		public void AddExp(long exp)
+		{
+			nowExp += exp;
+			if (nowExp >= maxExp)
+			{
+				level++;
+				nowExp = 0;
+				maxExp += 100;
+				nowHp = maxHp;
+				nowMp = maxMp;
+			}
+		}
 
 		public void SendStatInfo()
 		{
