@@ -16,6 +16,7 @@ enum MsgId {
   S_ONDAMAGE = 8;
   S_CHANGE_STATUS = 9;
   S_MONSTER_STATE = 10;
+  C_USE_ITEM = 11;
 }
 
 enum CreatureState {
@@ -92,6 +93,11 @@ message S_MonsterState{
 	PositionInfo nowPos = 3;
 	PositionInfo moveVec = 4;
 	int32 targetId = 5;
+}
+
+message C_UseItem{
+	int32 itemCode = 1;
+	int32 useCount = 2;
 }
 
 message ObjectInfo {

@@ -39,6 +39,14 @@ public class MyPlayer : MonoBehaviour
         //UIManager.Instance.SetPlayerEXPBar(nowEXP, maxEXP);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            SendUseItem(1);
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            SendUseItem(2);
+    }
+
     private void LateUpdate()
     {
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y + 16, transform.position.z - 16);
@@ -122,6 +130,13 @@ public class MyPlayer : MonoBehaviour
         C_Move move = new C_Move();
         move.PosInfo = new PositionInfo() { PosX = pos.x, PosY = pos.y, PosZ = pos.z };
         Managers.Network.Send(move);
+    }
+
+    private void SendUseItem(int itemId)
+    {
+        C_UseItem item = new C_UseItem();
+        item.ItemCode = itemId;
+        Managers.Network.Send(item);
     }
 
     #endregion

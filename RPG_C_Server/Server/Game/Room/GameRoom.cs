@@ -193,6 +193,14 @@ namespace Server.Game
             }
 		}
 
+		public void HandleUseItem(Player player, C_UseItem itemPacket)
+		{
+			if (player == null)
+				return;
+
+			player.UseItem(itemPacket.ItemCode, itemPacket.UseCount);
+		}
+
 		public Player FindPlayer(Func<Player, bool> condition)
 		{
 			foreach (Player player in _players.Values)

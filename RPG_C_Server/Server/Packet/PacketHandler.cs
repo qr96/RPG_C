@@ -42,4 +42,20 @@ class PacketHandler
 
 		room.Push(room.HandleSkill, player, skillPacket);
 	}
+
+	public static void C_UseItemHandler(PacketSession session, IMessage packet)
+	{
+		C_UseItem itemPacket = packet as C_UseItem;
+        ClientSession clientSession = session as ClientSession;
+
+        Player player = clientSession.MyPlayer;
+        if (player == null)
+            return;
+
+        GameRoom room = player.Room;
+        if (room == null)
+            return;
+
+        room.Push(room.HandleUseItem, player, itemPacket);
+    }
 }

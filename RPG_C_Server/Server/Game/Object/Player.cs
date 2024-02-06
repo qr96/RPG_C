@@ -70,6 +70,20 @@ namespace Server.Game
 				target.OnDamaged(this, level * 2);
         }
 
+		public void UseItem(int itemId, int count)
+		{
+			if (itemId == 1)
+			{
+				nowHp = Math.Min(nowHp + 10, maxHp);
+				SendStatInfo();
+			}
+			else if (itemId == 2)
+			{
+                nowMp = Math.Min(nowMp + 10, maxMp);
+                SendStatInfo();
+            }
+		}
+
 		public void AddExp(long exp)
 		{
 			nowExp += exp;
