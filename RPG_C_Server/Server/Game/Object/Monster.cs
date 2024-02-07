@@ -42,6 +42,7 @@ namespace Server.Game
             if (nowHP <= 0)
             {
                 attacker.AddExp(10);
+                attacker.AddMoney(100);
                 respawnTime = DateTime.Now.AddSeconds(5f);
             }
 

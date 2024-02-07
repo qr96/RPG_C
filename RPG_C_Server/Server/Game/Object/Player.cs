@@ -21,9 +21,11 @@ namespace Server.Game
 		long maxMp;
         long maxExp;
 
-        long nowHp;
-        long nowMp;
-		long nowExp;
+        long _nowHp;
+        long _nowMp;
+		long _nowExp;
+
+		long _money;
 		
 		public Player()
 		{
@@ -37,13 +39,13 @@ namespace Server.Game
 
 		public void Spawn()
 		{
-			nowHp = maxHp;
-			nowMp = maxMp;
+			_nowHp = maxHp;
+			_nowMp = maxMp;
 		}
 
         public override void OnDamaged(GameObject attacker, long damage)
 		{
-			nowHp -= damage;
+			_nowHp -= damage;
 		}
 
 		public override void OnDead(GameObject attacker)
@@ -64,7 +66,7 @@ namespace Server.Game
 			else
 				skillCoolTimes[skillId] = DateTime.Now;
 
-            nowMp -= 1;
+            _nowMp -= 1;
 
 			if (skillId == 1)
 				target.OnDamaged(this, level * 2);
@@ -74,27 +76,32 @@ namespace Server.Game
 		{
 			if (itemId == 1)
 			{
-				nowHp = Math.Min(nowHp + 10, maxHp);
+				_nowHp = Math.Min(_nowHp + 10, maxHp);
 				SendStatInfo();
 			}
 			else if (itemId == 2)
 			{
-                nowMp = Math.Min(nowMp + 10, maxMp);
+                _nowMp = Math.Min(_nowMp + 10, maxMp);
                 SendStatInfo();
             }
 		}
 
 		public void AddExp(long exp)
 		{
-			nowExp += exp;
-			if (nowExp >= maxExp)
+			_nowExp += exp;
+			if (_nowExp >= maxExp)
 			{
 				level++;
-				nowExp = 0;
+				_nowExp = 0;
 				maxExp += 100;
-				nowHp = maxHp;
-				nowMp = maxMp;
+				_nowHp = maxHp;
+				_nowMp = maxMp;
 			}
+		}
+
+		public void AddMoney(long money)
+		{
+			_money += money;
 		}
 
 		public void SendStatInfo()
@@ -105,9 +112,9 @@ namespace Server.Game
 			packet.MaxHp = maxHp;
 			packet.MaxMp = maxMp;
 			packet.MaxExp = maxExp;
-			packet.NowHp = nowHp;
-			packet.NowMp = nowMp;
-			packet.NowExp = nowExp;
+			packet.NowHp = _nowHp;
+			packet.NowMp = _nowMp;
+			packet.NowExp = _nowExp;
 
 			Session.Send(packet);
 		}

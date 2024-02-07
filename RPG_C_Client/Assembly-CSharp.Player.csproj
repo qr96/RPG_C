@@ -94,6 +94,7 @@
     <Compile Include="Assets\JMO Assets\Cartoon FX (legacy)\Scripts\CFX_AutoDestructShuriken.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
     <Compile Include="Assets\Scripts\Util\MonoCallBack.cs" />
+    <Compile Include="Assets\Scripts\UI\InfoPopup.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Util\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Packet\PacketHandler.cs" />

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class UIManager : MonoBehaviour
     GuageBar playerHPBar;
     GuageBar playerMPBar;
     GuageBar playerEXPBar;
+
+    Button menuButton;
+    InfoPopup infoPopup;
 
     ItemSlot hpPotion;
     ItemSlot mpPotion;
@@ -37,8 +41,13 @@ public class UIManager : MonoBehaviour
         damageTexts = new Stack<TMP_Text>();
         damageText = transform.Find("DamageText").GetComponent<TMP_Text>();
 
+        menuButton = transform.Find("MenuButton").GetComponent<Button>();
+        infoPopup = transform.Find("InfoPopup").GetComponent<InfoPopup>();
+
         hpPotion = transform.Find("HpPotion").GetComponent<ItemSlot>();
         mpPotion = transform.Find("MpPotion").GetComponent<ItemSlot>();
+
+        menuButton.onClick.AddListener(() => infoPopup.ShowPopup());
     }
 
     public void SetPlayerLevel(int level)
@@ -71,7 +80,7 @@ public class UIManager : MonoBehaviour
         mpPotion.StartCoolTime(coolTime);
     }
 
-    // Pooling
+    #region Object Pooling
     public GuageBar RentOtherHPBar()
     {
         if (otherHPBars.Count > 0)
@@ -99,4 +108,5 @@ public class UIManager : MonoBehaviour
         text.gameObject.SetActive(false);
         damageTexts.Push(text);
     }
+    #endregion
 }
