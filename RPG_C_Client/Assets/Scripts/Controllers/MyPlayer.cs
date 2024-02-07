@@ -1,6 +1,7 @@
 using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MyPlayer : MonoBehaviour
@@ -24,6 +25,8 @@ public class MyPlayer : MonoBehaviour
     DateTime attackEnd;
     Vector2 input;
 
+    Dictionary<int, DateTime> itemCoolEndTimes = new Dictionary<int, DateTime>();
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -35,16 +38,26 @@ public class MyPlayer : MonoBehaviour
     private void Start()
     {
         StartCoroutine(SendMoveCo());
+        itemCoolEndTimes.Add(1, DateTime.MinValue);
+        itemCoolEndTimes.Add(2, DateTime.MinValue);
         //UIManager.Instance.SetPlayerHPBar(nowHP, maxHP);
         //UIManager.Instance.SetPlayerEXPBar(nowEXP, maxEXP);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && DateTime.Now > itemCoolEndTimes[1])
+        {
+            itemCoolEndTimes[1] = DateTime.Now.AddSeconds(0.3f);
+            UIManager.Instance.SetHpPotion(0.3f);
             SendUseItem(1);
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2) && DateTime.Now > itemCoolEndTimes[2])
+        {
+            itemCoolEndTimes[2] = DateTime.Now.AddSeconds(0.3f);
+            UIManager.Instance.SetMpPotion(0.3f);
             SendUseItem(2);
+        }
     }
 
     private void LateUpdate()

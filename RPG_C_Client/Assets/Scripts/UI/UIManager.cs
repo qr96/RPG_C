@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviour
     GuageBar playerMPBar;
     GuageBar playerEXPBar;
 
+    ItemSlot hpPotion;
+    ItemSlot mpPotion;
+
     Stack<GuageBar> otherHPBars;
     GuageBar otherHPBarPrefab;
 
@@ -33,9 +36,10 @@ public class UIManager : MonoBehaviour
         otherHPBarPrefab = transform.Find("HPBar").GetComponent<GuageBar>();
         damageTexts = new Stack<TMP_Text>();
         damageText = transform.Find("DamageText").GetComponent<TMP_Text>();
+
+        hpPotion = transform.Find("HpPotion").GetComponent<ItemSlot>();
+        mpPotion = transform.Find("MpPotion").GetComponent<ItemSlot>();
     }
-
-
 
     public void SetPlayerLevel(int level)
     {
@@ -55,6 +59,16 @@ public class UIManager : MonoBehaviour
     public void SetPlayerEXPBar(long nowEXP, long maxEXP)
     {
         playerEXPBar.SetAmount(nowEXP, maxEXP);
+    }
+
+    public void SetHpPotion(float coolTime)
+    {
+        hpPotion.StartCoolTime(coolTime);
+    }
+
+    public void SetMpPotion(float coolTime)
+    {
+        mpPotion.StartCoolTime(coolTime);
     }
 
     // Pooling
