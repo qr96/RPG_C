@@ -41,11 +41,21 @@ namespace Server.Game
             nowHP -= damage;
             if (nowHP <= 0)
             {
-                attacker.AddExp(10);
-                attacker.AddMoney(100);
-                respawnTime = DateTime.Now.AddSeconds(5f);
+                attacker.AddExp(1000);
+                //attacker.AddMoney(100);
+                respawnTime = DateTime.Now.AddSeconds(15f);
+                SendSpawnItem(attacker, new List<ItemInfo>() { new ItemInfo() { ItemCode = 1, Count = 100 } });
             }
 
+            SendOnDamage(attacker, damage);
+
+            attacker.OnDamaged(this, power);
+        }
+
+        #region Packet
+
+        void SendOnDamage(Player attacker, long damage)
+        {
             S_Ondamage packet = new S_Ondamage();
             packet.ObjectId = Id;
             packet.AttackerId = attacker.Id;
@@ -53,10 +63,19 @@ namespace Server.Game
             packet.RemainHp = nowHP;
             packet.MaxHp = maxHP;
             Room.Broadcast(packet);
-
-            attacker.OnDamaged(this, power);
         }
+
+        void SendSpawnItem(Player player, List<ItemInfo> items)
+        {
+            S_SpawnItem packet = new S_SpawnItem();
+            packet.TargetId = Id;
+            foreach (var item in items)
+                packet.ItemInfos.Add(item);
+
+            player.Session.Send(packet);
+        }
+
+        #endregion
     }
 }
-
 

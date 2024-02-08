@@ -1,12 +1,7 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
-using Server.Data;
-using Server.Game.Collider;
-using Server.Game.Object;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
 
 namespace Server.Game
 {
@@ -16,10 +11,9 @@ namespace Server.Game
 
 		Dictionary<int, Player> _players = new Dictionary<int, Player>();
 		Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
-		List<BaseMonster> _baseMonsters = new List<BaseMonster>();
 
 		DateTime respawnTime = DateTime.MinValue;
-		float respawnDelay = 10f;
+		float respawnDelay = 20f;
 
 		public Random rand = new Random();
 
@@ -200,6 +194,23 @@ namespace Server.Game
 
 			player.UseItem(itemPacket.ItemCode, itemPacket.UseCount);
 		}
+
+		public void HandlePickupItem(Player player, C_PickupItem itemPacket)
+		{
+			if (player == null)
+				return;
+			// TODO : 아이템 실제로 떨어진거 먹었는지 검증 필요
+			if (itemPacket.PickupItem.ItemCode == 1)
+				player.AddMoney(itemPacket.PickupItem.Count);
+		}
+
+		public void HandleInventoryInfo(Player player)
+		{
+			if (player == null)
+				return;
+
+			player.SendInventoryInfo();
+        }
 
 		public Player FindPlayer(Func<Player, bool> condition)
 		{

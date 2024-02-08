@@ -29,6 +29,10 @@ class PacketManager
 		_handler.Add((ushort)MsgId.CSkill, PacketHandler.C_SkillHandler);
         _onRecv.Add((ushort)MsgId.CUseItem, MakePacket<C_UseItem>);
         _handler.Add((ushort)MsgId.CUseItem, PacketHandler.C_UseItemHandler);
+        _onRecv.Add((ushort)MsgId.CPickupItem, MakePacket<C_PickupItem>);
+        _handler.Add((ushort)MsgId.CPickupItem, PacketHandler.C_PickupItemHandler);
+        _onRecv.Add((ushort)MsgId.CInventoryInfo, MakePacket<C_InventoryInfo>);
+        _handler.Add((ushort)MsgId.CInventoryInfo, PacketHandler.C_InventoryInfoHandler);
     }
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

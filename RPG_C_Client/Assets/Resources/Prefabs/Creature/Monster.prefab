@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4937734731404489499}
-  - component: {fileID: 6958182918226767564}
   - component: {fileID: 4811179814998719215}
   - component: {fileID: 5137046375511411541}
   - component: {fileID: 3552995262324016338}
@@ -37,31 +36,6 @@ Transform:
   - {fileID: 977275068506536879}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6958182918226767564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4721953008865906184}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29d819c5d072d214fa45e030726e8615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  maxHp: 100
-  nowHp: 100
-  attack: 10
-  pushPower: 0.5
-  movePoints:
-  - {x: 5.41, y: 0, z: 4.65}
-  - {x: 32, y: 0, z: 4.65}
-  maxChaseDis: 400
-  knockBackDelay: 0.5
-  desPos: {x: 1.57, y: 0, z: 4.65}
-  deathEffect: {fileID: 0}
-  hpBarDuration: 5
 --- !u!135 &4811179814998719215
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -92,7 +66,7 @@ Rigidbody:
   m_GameObject: {fileID: 4721953008865906184}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -124,10 +98,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 0
   speed: 2
-  pushPower: 3
+  pushPower: 5
   hpBarDuration: 5
   knockBackDuration: 0.8
   desPos: {x: 0, y: 0, z: 0}
+  target: {fileID: 0}
 --- !u!114 &7404675441688945153
 MonoBehaviour:
   m_ObjectHideFlags: 0

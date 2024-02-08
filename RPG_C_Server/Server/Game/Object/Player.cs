@@ -20,6 +20,7 @@ namespace Server.Game
         long maxHp;
 		long maxMp;
         long maxExp;
+		long attack;
 
         long _nowHp;
         long _nowMp;
@@ -35,6 +36,7 @@ namespace Server.Game
 			maxHp = 100;
 			maxMp = 100;
 			maxExp = 100;
+			attack = 10;
 		}
 
 		public void Spawn()
@@ -69,7 +71,7 @@ namespace Server.Game
             _nowMp -= 1;
 
 			if (skillId == 1)
-				target.OnDamaged(this, level * 2);
+				target.OnDamaged(this, attack);
         }
 
 		public void UseItem(int itemId, int count)
@@ -89,22 +91,26 @@ namespace Server.Game
 		public void AddExp(long exp)
 		{
 			_nowExp += exp;
-			if (_nowExp >= maxExp)
+			while (_nowExp >= maxExp)
 			{
-				level++;
-				_nowExp = 0;
-				maxExp += 100;
-				_nowHp = maxHp;
-				_nowMp = maxMp;
-			}
+                level++;
+				_nowExp -= maxExp;
+                maxExp = 100 + 20 * level;
+                _nowHp = maxHp;
+                _nowMp = maxMp;
+                attack += 2;
+            }
 		}
 
 		public void AddMoney(long money)
 		{
 			_money += money;
+			Console.WriteLine(_money);
 		}
 
-		public void SendStatInfo()
+        #region Packet
+
+        public void SendStatInfo()
 		{
 			S_ChangeStatus packet = new S_ChangeStatus();
 			packet.ObjectId = Id;
@@ -118,5 +124,14 @@ namespace Server.Game
 
 			Session.Send(packet);
 		}
-	}
+
+		public void SendInventoryInfo()
+		{
+			S_InventoryInfo packet = new S_InventoryInfo();
+			packet.Money = _money;
+			Session.Send(packet);
+		}
+
+        #endregion
+    }
 }

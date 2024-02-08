@@ -41,6 +41,10 @@ class PacketManager
         _handler.Add((ushort)MsgId.SChangeStatus, PacketHandler.S_S_ChangeStatusHandler);
         _onRecv.Add((ushort)MsgId.SMonsterState, MakePacket<S_MonsterState>);
 		_handler.Add((ushort)MsgId.SMonsterState, PacketHandler.S_MonsterStateHandler);
+        _onRecv.Add((ushort)MsgId.SSpawnItem, MakePacket<S_SpawnItem>);
+		_handler.Add((ushort)MsgId.SSpawnItem, PacketHandler.S_SpawnItemHandler);
+        _onRecv.Add((ushort)MsgId.SInventoryInfo, MakePacket<S_InventoryInfo>);
+        _handler.Add((ushort)MsgId.SInventoryInfo, PacketHandler.S_InventoryInfoHandler);
     }
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

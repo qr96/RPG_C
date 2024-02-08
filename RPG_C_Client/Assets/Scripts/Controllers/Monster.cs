@@ -1,9 +1,6 @@
 using DG.Tweening;
 using Google.Protobuf.Protocol;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
@@ -25,7 +22,7 @@ public class Monster : MonoBehaviour
     Rigidbody rigid;
     Animator animator;
 
-    GameObject target;
+    public GameObject target;
     GuageBar hpBar;
 
     public enum MonsterState
@@ -164,6 +161,8 @@ public class Monster : MonoBehaviour
             target = attacker;
         else
             target = null;
+
+        sm.SetState(MonsterState.Damaged);
 
         hideHpBarTime = DateTime.Now.AddSeconds(hpBarDuration);
         if (hpBar == null)

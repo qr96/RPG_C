@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,12 +24,12 @@ public class InfoPopup : MonoBehaviour
 
     public void ShowPopup()
     {
+        SendInfoPacket();
         gameObject.SetActive(true);
     }
 
     public void HidePopup()
     {
-        Debug.Log("HidePopup");
         gameObject.SetActive(false);
     }
 
@@ -36,4 +37,14 @@ public class InfoPopup : MonoBehaviour
     {
         moneyText.text = money.ToString();
     }
+
+    #region Packet
+
+    void SendInfoPacket()
+    {
+        C_InventoryInfo inventoryInfo = new C_InventoryInfo();
+        Managers.Network.Send(inventoryInfo);
+    }
+
+    #endregion
 }

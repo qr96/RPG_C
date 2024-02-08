@@ -121,9 +121,14 @@ public class MyPlayer : MonoBehaviour
 
     IEnumerator SendMoveCo()
     {
+        Vector3 prevPos = transform.position;
         while (true)
         {
-            SendMove(transform.position);
+            if (prevPos != transform.position)
+            {
+                SendMove(transform.position);
+                prevPos = transform.position;
+            }
             yield return new WaitForSeconds(0.2f);
         }
     }

@@ -80,6 +80,11 @@ public class UIManager : MonoBehaviour
         mpPotion.StartCoolTime(coolTime);
     }
 
+    public void SetUserInfoPopup(long money)
+    {
+        infoPopup.SetMoney(money);
+    }
+
     #region Object Pooling
     public GuageBar RentOtherHPBar()
     {

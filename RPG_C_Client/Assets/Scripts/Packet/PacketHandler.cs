@@ -67,12 +67,6 @@ class PacketHandler
 
 		if (Managers.Object.MyPlayer.Id == skillPacket.ObjectId)
             return;
-
-        //PlayerController cc = go.GetComponent<PlayerController>();
-		//if (cc != null)
-		//{
-		//	cc.UseSkill();
-		//}
 	}
 
 	public static void S_OnDamageHandler(PacketSession session, IMessage packet)
@@ -88,6 +82,12 @@ class PacketHandler
 			return;
 
 		GameObject attacker = Managers.Object.FindById(damagePacket.AttackerId);
+		if (damagePacket.AttackerId != Managers.Object.MyPlayer.Id)
+		{
+			var player = attacker.GetComponent<OtherPlayer>();
+			if (player != null)
+				player.AttackMotion();
+		}
 
 		monster.OnDamagedServer(attacker, damagePacket.Damage, damagePacket.RemainHp, damagePacket.MaxHp);
     }
@@ -116,6 +116,37 @@ class PacketHandler
 			monster.RecvMonsterState(statePacket);
         }
     }
+
+	public static void S_SpawnItemHandler(PacketSession session, IMessage packet)
+	{
+		S_SpawnItem itemPacket = packet as S_SpawnItem;
+
+		foreach (var item in itemPacket.ItemInfos)
+		{
+            var money = Managers.Resource.Instantiate("Item/GoldCoins");
+            var droppedItem = money.GetComponent<DroppedItem>();
+			var itemTmp = item;
+
+            droppedItem.OnColliderEvent = () =>
+            {
+				C_PickupItem c_PickupItem = new C_PickupItem();
+				c_PickupItem.PickupItem = itemTmp;
+				Managers.Network.Send(c_PickupItem);
+				Managers.Resource.Destroy(money);
+            };
+
+            GameObject go = Managers.Object.FindById(itemPacket.TargetId);
+			if (go == null)
+				money.transform.position = Managers.Object.MyPlayer.transform.position;
+			else
+				money.transform.position = go.transform.position;
+        }
+	}
+
+	public static void S_InventoryInfoHandler(PacketSession session, IMessage packet)
+	{
+		S_InventoryInfo invenPacket = packet as S_InventoryInfo;
+
+		UIManager.Instance.SetUserInfoPopup(invenPacket.Money);
+    }
 }
-
-

@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1183728338916035834}
-  - {fileID: 4751782074313718871}
+  - {fileID: 1071131962497627271}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &921039182371064410
@@ -66,7 +66,7 @@ Rigidbody:
   m_GameObject: {fileID: 4653259742058879391}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69443b521d8864849818bace97eb92af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  Id: 0
   speed: 200
   attackDelay: 0.5
   attack: 10
@@ -445,7 +445,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 265d3a5ba69981a4698ceabcedf368b0, type: 3}
---- !u!4 &4751782074313718871 stripped
+--- !u!4 &1071131962497627271 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5880797563126852495, guid: 265d3a5ba69981a4698ceabcedf368b0,
     type: 3}

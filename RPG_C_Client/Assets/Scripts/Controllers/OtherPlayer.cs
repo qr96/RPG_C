@@ -31,15 +31,23 @@ public class OtherPlayer : MonoBehaviour
             if (lookVec != Vector3.zero)
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookVec), Time.deltaTime * rotateSpeed);
 
-            if (RBUtil.RemoveY(desPos - transform.position).sqrMagnitude > 1f)
-                animator.Play("Move");
-            else
-                animator.Play("Idle");
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            {
+                if (RBUtil.RemoveY(desPos - transform.position).sqrMagnitude > 1f)
+                    animator.Play("Move");
+                else
+                    animator.Play("Idle");
+            }
         }
     }
 
     public void SetDesPos(Vector3 desPos)
     {
         this.desPos = desPos;
+    }
+
+    public void AttackMotion()
+    {
+        animator.Play("Attack");
     }
 }
