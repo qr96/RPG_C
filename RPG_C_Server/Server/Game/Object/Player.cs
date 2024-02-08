@@ -105,7 +105,6 @@ namespace Server.Game
 		public void AddMoney(long money)
 		{
 			_money += money;
-			Console.WriteLine(_money);
 		}
 
         #region Packet
