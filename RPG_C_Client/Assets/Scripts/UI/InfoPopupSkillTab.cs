@@ -16,11 +16,11 @@ public class InfoPopupSkillTab : MonoBehaviour
 
     List<string> skillNames = new List<string>()
     {
-        "하체강화", "약점포착", "지구력 향상", "불굴", "마인드 컨트롤"
+        "기본공격", "하체강화", "약점포착", "지구력 향상", "불굴"
     };
     List<string> skillEffects = new List<string>()
     {
-        "이동속도", "치명확률", "최대 스태미너", "유지력", "모르겠다..."
+        "공격력", "이동속도", "치명확률", "최대 스태미너", "정신력"
     };
 
     private void Awake()

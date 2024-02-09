@@ -8,18 +8,32 @@ using UnityEngine.UI;
 public class InfoPopup : MonoBehaviour
 {
     // Common
-    public Button exitButton;
+    Button exitButton;
+    Button invenButton;
+    Button skillButton;
+
+    GameObject statTab;
+    GameObject invenTab;
+    GameObject skillTab;
 
     // Inventory
     TMP_Text moneyText;
 
     private void Awake()
     {
-        exitButton = transform.Find("ExitButton").GetComponent<Button>();
+        exitButton = gameObject.Find<Button>("ExitButton");
+        invenButton = gameObject.Find<Button>("NavigationBar/Inven");
+        skillButton = gameObject.Find<Button>("NavigationBar/Skill");
 
-        moneyText = transform.Find("InventoryTab").Find("Property").Find("MoneyText").GetComponent<TMP_Text>();
+        statTab = gameObject.Find("StatTab");
+        invenTab = gameObject.Find("InvenTab");
+        skillTab = gameObject.Find("SkillTab");
+
+        moneyText = invenTab.Find<TMP_Text>("Property/MoneyText");
 
         exitButton.onClick.AddListener(() => HidePopup());
+        invenButton.onClick.AddListener(() => SelectTab(1));
+        skillButton.onClick.AddListener(() => SelectTab(2));
     }
 
     public void ShowPopup()
@@ -36,6 +50,13 @@ public class InfoPopup : MonoBehaviour
     public void SetMoney(long money)
     {
         moneyText.text = money.ToString();
+    }
+
+    void SelectTab(int index)
+    {
+        statTab.SetActive(index == 0);
+        invenTab.SetActive(index == 1);
+        skillTab.SetActive(index == 2);
     }
 
     #region Packet

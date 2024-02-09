@@ -8,14 +8,8 @@ public class MyPlayer : MonoBehaviour
 {
     public int Id;
 
-    // Must Move to Server
     public float speed;
     public float attackDelay;
-    public long attack;
-    public long nowHP;
-    public long maxHP;    
-    public long nowEXP;
-    public long maxEXP;
 
     Rigidbody rigid;
     GameObject avatar;

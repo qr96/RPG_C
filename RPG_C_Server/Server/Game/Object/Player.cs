@@ -2,9 +2,6 @@
 using Server.Game.Collider;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
-using System.Threading;
 
 namespace Server.Game
 {
@@ -15,12 +12,22 @@ namespace Server.Game
 		// 스킬 사용불가한 시간 딕셔너리
 		Dictionary<int, DateTime> skillCoolTimes = new Dictionary<int, DateTime>();
 
+		List<int> _skillLevels = new List<int>();
+
         // 능력치
-        int level;
-        long maxHp;
-		long maxMp;
-        long maxExp;
-		long attack;
+        int _level;
+        long _maxExp;
+        long _maxHp;
+		long _maxMp;
+		long _attack;
+		int _mental;
+		float _moveSpeed;
+
+		long _skillMaxHp;
+		long _skillMaxMp;
+		long _skillAttack;
+		int _skillMental;
+		float _skillMoveSpeed;
 
         long _nowHp;
         long _nowMp;
@@ -32,17 +39,22 @@ namespace Server.Game
 		{
 			ObjectType = GameObjectType.Player;
 
-			level = 1;
-			maxHp = 100;
-			maxMp = 100;
-			maxExp = 100;
-			attack = 10;
+            _level = 1;
+            _maxHp = 100;
+			_maxMp = 100;
+            _maxExp = 100;
+            _attack = 10;
+			_moveSpeed = 200;
+
+            _skillLevels.Add(1);
+            for (int i = 1; i < 5; i++)
+				_skillLevels.Add(0);
 		}
 
 		public void Spawn()
 		{
-			_nowHp = maxHp;
-			_nowMp = maxMp;
+			_nowHp = _maxHp;
+			_nowMp = _maxMp;
 		}
 
         public override void OnDamaged(GameObject attacker, long damage)
@@ -68,22 +80,24 @@ namespace Server.Game
 			else
 				skillCoolTimes[skillId] = DateTime.Now;
 
-            _nowMp -= 1;
-
-			if (skillId == 1)
-				target.OnDamaged(this, attack);
+            if (skillId == 1)
+			{
+                var damage = _attack * ((_nowMp * 100 / _maxMp - 100) * (100 - _mental) / 100 + 100) / 100;
+                target.OnDamaged(this, damage);
+                _nowMp -= 10;
+            }		
         }
 
 		public void UseItem(int itemId, int count)
 		{
 			if (itemId == 1)
 			{
-				_nowHp = Math.Min(_nowHp + 10, maxHp);
+				_nowHp = Math.Min(_nowHp + 50, _maxHp);
 				SendStatInfo();
 			}
 			else if (itemId == 2)
 			{
-                _nowMp = Math.Min(_nowMp + 10, maxMp);
+                _nowMp = Math.Min(_nowMp + 50, _maxMp);
                 SendStatInfo();
             }
 		}
@@ -91,14 +105,14 @@ namespace Server.Game
 		public void AddExp(long exp)
 		{
 			_nowExp += exp;
-			while (_nowExp >= maxExp)
+			while (_nowExp >= _maxExp)
 			{
-                level++;
-				_nowExp -= maxExp;
-                maxExp = 100 + 20 * level;
-                _nowHp = maxHp;
-                _nowMp = maxMp;
-                attack += 2;
+                _level++;
+				_nowExp -= _maxExp;
+                _maxExp = 100 + 20 * _level;
+                _nowHp = _maxHp;
+                _nowMp = _maxMp;
+                _attack += 2;
             }
 		}
 
@@ -107,16 +121,25 @@ namespace Server.Game
 			_money += money;
 		}
 
+		public void UpdateSkillStats()
+		{
+			_skillAttack = _skillLevels[0] * 2;
+			_skillMoveSpeed = _skillLevels[1] * 2;
+			//2
+			_skillMaxMp = _skillLevels[3] * 10;
+			_skillMental = _skillLevels[4] * 1;
+		}
+
         #region Packet
 
         public void SendStatInfo()
 		{
 			S_ChangeStatus packet = new S_ChangeStatus();
 			packet.ObjectId = Id;
-			packet.Level = level;
-			packet.MaxHp = maxHp;
-			packet.MaxMp = maxMp;
-			packet.MaxExp = maxExp;
+			packet.Level = _level;
+			packet.MaxHp = _maxHp;
+			packet.MaxMp = _maxMp;
+			packet.MaxExp = _maxExp;
 			packet.NowHp = _nowHp;
 			packet.NowMp = _nowMp;
 			packet.NowExp = _nowExp;
