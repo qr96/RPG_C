@@ -15,4 +15,20 @@ public static class Extension
 	{
 		return go != null && go.activeSelf;
 	}
+
+    public static GameObject Find(this GameObject go, string path)
+    {
+		var names = path.Split("/");
+		var parent = go.transform;
+
+		foreach (var name in names)
+            parent = parent.Find(name);
+
+        return parent.gameObject;
+    }
+
+    public static T Find<T>(this GameObject go, string path) where T : UnityEngine.Component
+	{
+		return go.Find(path).GetComponent<T>();
+	}
 }

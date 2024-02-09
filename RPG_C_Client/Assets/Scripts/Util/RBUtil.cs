@@ -20,7 +20,7 @@ public class RBUtil
     public static Color HexToColor(string hex)
     {
         hex = hex.Replace("#", "");
-        if (hex.Length != 6 || hex.Length != 8)
+        if (hex.Length != 6 && hex.Length != 8)
         {
             Debug.LogError("올바른 HEX 값이 아닙니다.");
             return Color.white;
