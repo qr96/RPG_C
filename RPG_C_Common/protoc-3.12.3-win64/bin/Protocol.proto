@@ -21,6 +21,10 @@ enum MsgId {
   C_PICKUP_ITEM = 13;
   C_INVENTORY_INFO = 14;
   S_INVENTORY_INFO = 15;
+  C_SKILL_TAB_INFO = 16;
+  S_SKILL_TAB_INFO = 17;
+  C_SKILL_LEVEL_UP = 18;
+  S_SKILL_LEVEL_UP = 19;
 }
 
 enum CreatureState {
@@ -119,6 +123,22 @@ message C_InventoryInfo{
 message S_InventoryInfo{
 	int64 money = 1;
 	repeated ItemInfo inventory = 2;
+}
+
+message C_SkillTabInfo{
+}
+
+message S_SkillTabInfo{
+	int32 skillPoint = 1;
+	repeated int32 skillLevels = 2;
+}
+
+message C_SkillLevelUp{
+	int32 skillCode = 1;
+}
+
+message S_SKillLevelUp{
+	int32 result = 1;
 }
 
 message ObjectInfo {

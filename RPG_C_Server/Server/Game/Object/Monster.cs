@@ -41,7 +41,7 @@ namespace Server.Game
             nowHP -= damage;
             if (nowHP <= 0)
             {
-                attacker.AddExp(1000);
+                attacker.AddExp(100);
                 //attacker.AddMoney(100);
                 respawnTime = DateTime.Now.AddSeconds(15f);
                 SendSpawnItem(attacker, new List<ItemInfo>() { new ItemInfo() { ItemCode = 1, Count = 100 } });

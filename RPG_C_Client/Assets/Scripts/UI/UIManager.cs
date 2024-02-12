@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
 
     Button menuButton;
     InfoPopup infoPopup;
+    
 
     ItemSlot hpPotion;
     ItemSlot mpPotion;
@@ -83,6 +84,11 @@ public class UIManager : MonoBehaviour
     public void SetUserInfoPopup(long money)
     {
         infoPopup.SetMoney(money);
+    }
+
+    public void SetSkillTabPopup(int skillPoint, List<int> skillLevels)
+    {
+        infoPopup.SetSkillTab(skillPoint, skillLevels);
     }
 
     #region Object Pooling

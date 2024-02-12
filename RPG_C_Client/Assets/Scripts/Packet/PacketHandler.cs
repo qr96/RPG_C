@@ -149,4 +149,22 @@ class PacketHandler
 
 		UIManager.Instance.SetUserInfoPopup(invenPacket.Money);
     }
+
+	public static void S_SKillTabInfoHandler(PacketSession session, IMessage packet)
+	{
+		S_SkillTabInfo skillPacket = packet as S_SkillTabInfo;
+
+		int skillPoint = skillPacket.SkillPoint;
+		List<int> skillLevels = new List<int>();
+		foreach (var skillLevel in skillPacket.SkillLevels)
+			skillLevels.Add(skillLevel);
+
+		UIManager.Instance.SetSkillTabPopup(skillPoint, skillLevels);
+    }
+
+	public static void S_SkillLevelUpHandler(PacketSession session, IMessage packet)
+	{
+		S_SKillLevelUp s_SKillLevelUp = packet as S_SKillLevelUp;
+
+	}
 }

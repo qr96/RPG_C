@@ -14,7 +14,7 @@ public class InfoPopup : MonoBehaviour
 
     GameObject statTab;
     GameObject invenTab;
-    GameObject skillTab;
+    InfoPopupSkillTab skillTab;
 
     // Inventory
     TMP_Text moneyText;
@@ -27,7 +27,7 @@ public class InfoPopup : MonoBehaviour
 
         statTab = gameObject.Find("StatTab");
         invenTab = gameObject.Find("InvenTab");
-        skillTab = gameObject.Find("SkillTab");
+        skillTab = gameObject.Find<InfoPopupSkillTab>("SkillTab");
 
         moneyText = invenTab.Find<TMP_Text>("Property/MoneyText");
 
@@ -39,6 +39,7 @@ public class InfoPopup : MonoBehaviour
     public void ShowPopup()
     {
         SendInfoPacket();
+        SendSkillTabInfo();
         gameObject.SetActive(true);
     }
 
@@ -52,11 +53,16 @@ public class InfoPopup : MonoBehaviour
         moneyText.text = money.ToString();
     }
 
+    public void SetSkillTab(int skillPoint, List<int> skillLevels)
+    {
+        skillTab.SetSkillLevels(skillPoint, skillLevels);
+    }
+
     void SelectTab(int index)
     {
         statTab.SetActive(index == 0);
         invenTab.SetActive(index == 1);
-        skillTab.SetActive(index == 2);
+        skillTab.gameObject.SetActive(index == 2);
     }
 
     #region Packet
@@ -65,6 +71,12 @@ public class InfoPopup : MonoBehaviour
     {
         C_InventoryInfo inventoryInfo = new C_InventoryInfo();
         Managers.Network.Send(inventoryInfo);
+    }
+
+    void SendSkillTabInfo()
+    {
+        C_SkillTabInfo packet = new C_SkillTabInfo();
+        Managers.Network.Send(packet);
     }
 
     #endregion

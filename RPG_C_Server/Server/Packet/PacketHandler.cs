@@ -89,4 +89,35 @@ class PacketHandler
 
 		room.Push(room.HandleInventoryInfo, player);
     }
+
+	public static void C_SkillTabInfoHandler(PacketSession session, IMessage packet)
+	{
+		ClientSession clientSession = session as ClientSession;
+
+        Player player = clientSession.MyPlayer;
+        if (player == null)
+            return;
+
+        GameRoom room = player.Room;
+        if (room == null)
+            return;
+
+		room.Push(player.SendSkillTabInfo);
+    }
+
+	public static void C_SkillLevelUpHandler(PacketSession session, IMessage packet)
+	{
+        C_SkillLevelUp c_skillLevelup = packet as C_SkillLevelUp;
+        ClientSession clientSession = session as ClientSession;
+
+        Player player = clientSession.MyPlayer;
+        if (player == null)
+            return;
+
+        GameRoom room = player.Room;
+        if (room == null)
+            return;
+
+        room.Push(player.LearnSkill, c_skillLevelup.SkillCode);
+    }
 }

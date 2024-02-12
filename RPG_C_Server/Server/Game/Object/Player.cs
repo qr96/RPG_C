@@ -34,7 +34,8 @@ namespace Server.Game
 		long _nowExp;
 
 		long _money;
-		
+		int _skillPoint;
+
 		public Player()
 		{
 			ObjectType = GameObjectType.Player;
@@ -82,10 +83,17 @@ namespace Server.Game
 
             if (skillId == 1)
 			{
-                var damage = _attack * ((_nowMp * 100 / _maxMp - 100) * (100 - _mental) / 100 + 100) / 100;
-                target.OnDamaged(this, damage);
-                _nowMp -= 10;
-            }		
+                if (_nowMp < 10)
+				{
+					target.OnDamaged(this, 0);
+                }
+				else
+				{
+					var damage = (_attack + _skillAttack) * ((_nowMp * 100 / _maxMp - 100) * (100 - _mental - _skillMental) / 100 + 100) / 100;
+                    target.OnDamaged(this, damage);
+                    _nowMp -= 10;
+                }
+            }
         }
 
 		public void UseItem(int itemId, int count)
@@ -113,6 +121,7 @@ namespace Server.Game
                 _nowHp = _maxHp;
                 _nowMp = _maxMp;
                 _attack += 2;
+				_skillPoint += 30;
             }
 		}
 
@@ -129,6 +138,21 @@ namespace Server.Game
 			_skillMaxMp = _skillLevels[3] * 10;
 			_skillMental = _skillLevels[4] * 1;
 		}
+
+		public void LearnSkill(int skillId)
+		{
+			if (skillId >= _skillLevels.Count)
+				return;
+
+			if (_skillPoint <= 0)
+				return;
+
+            _skillPoint--;
+            _skillLevels[skillId]++;
+
+            UpdateSkillStats();
+            SendSkillTabInfo();
+        }
 
         #region Packet
 
@@ -151,6 +175,15 @@ namespace Server.Game
 		{
 			S_InventoryInfo packet = new S_InventoryInfo();
 			packet.Money = _money;
+			Session.Send(packet);
+		}
+
+		public void SendSkillTabInfo()
+		{
+			S_SkillTabInfo packet = new S_SkillTabInfo();
+			packet.SkillPoint = _skillPoint;
+			foreach (var skill in _skillLevels)
+				packet.SkillLevels.Add(skill);
 			Session.Send(packet);
 		}
 
