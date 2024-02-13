@@ -120,7 +120,7 @@ namespace Server.Game
                 _maxExp = 100 + 20 * _level;
                 _nowHp = _maxHp;
                 _nowMp = _maxMp;
-                _attack += 2;
+                //_attack += 2;
 				_skillPoint += 30;
             }
 		}
@@ -136,7 +136,7 @@ namespace Server.Game
 			_skillMoveSpeed = _skillLevels[1] * 2;
 			//2
 			_skillMaxMp = _skillLevels[3] * 10;
-			_skillMental = _skillLevels[4] * 1;
+			_skillMental = _skillLevels[4] * 2;
 		}
 
 		public void LearnSkill(int skillId)
