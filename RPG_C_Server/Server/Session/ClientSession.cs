@@ -15,7 +15,7 @@ namespace Server
 {
 	public class ClientSession : PacketSession
 	{
-		public Player MyPlayer { get; set; }
+		public Player MyPlayer;
 		public int SessionId { get; set; }
 
 		public void Send(IMessage packet)
@@ -46,7 +46,6 @@ namespace Server
 
 				MyPlayer.Session = this;
 			}
-
 			GameRoom room = RoomManager.Instance.Find(1);
 			room.Push(room.EnterGame, MyPlayer);
 		}

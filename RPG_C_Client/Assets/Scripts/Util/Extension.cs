@@ -29,6 +29,8 @@ public static class Extension
 
     public static T Find<T>(this GameObject go, string path) where T : UnityEngine.Component
 	{
-		return go.Find(path).GetComponent<T>();
+		var component = go.Find(path).GetComponent<T>();
+		if (component == null) Debug.LogError("Try to find wrong component");
+		return component;
 	}
 }

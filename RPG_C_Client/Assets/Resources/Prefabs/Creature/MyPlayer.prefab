@@ -99,11 +99,6 @@ MonoBehaviour:
   Id: 0
   speed: 200
   attackDelay: 0.5
-  attack: 10
-  nowHP: 1000
-  maxHP: 1000
-  nowEXP: 0
-  maxEXP: 100
 --- !u!1001 &1183728338915629016
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -22,9 +22,11 @@ class PacketManager
 	public Action<PacketSession, IMessage, ushort> CustomHandler { get; set; }
 
 	public void Register()
-	{		
-		_onRecv.Add((ushort)MsgId.SEnterGame, MakePacket<S_EnterGame>);
-		_handler.Add((ushort)MsgId.SEnterGame, PacketHandler.S_EnterGameHandler);		
+	{
+        _onRecv.Add((ushort)MsgId.SLoginGame, MakePacket<S_LoginGame>);
+		_handler.Add((ushort)MsgId.SLoginGame, PacketHandler.S_LoginGameHandler);
+        _onRecv.Add((ushort)MsgId.SEnterGame, MakePacket<S_EnterGame>);
+		_handler.Add((ushort)MsgId.SEnterGame, PacketHandler.S_EnterGameHandler);
 		_onRecv.Add((ushort)MsgId.SLeaveGame, MakePacket<S_LeaveGame>);
 		_handler.Add((ushort)MsgId.SLeaveGame, PacketHandler.S_LeaveGameHandler);		
 		_onRecv.Add((ushort)MsgId.SSpawn, MakePacket<S_Spawn>);
@@ -49,6 +51,8 @@ class PacketManager
         _handler.Add((ushort)MsgId.SSkillTabInfo, PacketHandler.S_SKillTabInfoHandler);
         _onRecv.Add((ushort)MsgId.SSkillLevelUp, MakePacket<S_SKillLevelUp>);
 		_handler.Add((ushort)MsgId.SSkillLevelUp, PacketHandler.S_SkillLevelUpHandler);
+        _onRecv.Add((ushort)MsgId.SChat, MakePacket<S_Chat>);
+		_handler.Add((ushort)MsgId.SChat, PacketHandler.S_ChatHandler);
     }
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

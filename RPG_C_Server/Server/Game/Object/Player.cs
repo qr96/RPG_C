@@ -14,9 +14,13 @@ namespace Server.Game
 
 		List<int> _skillLevels = new List<int>();
 
-        // 능력치
+		// 유저 정보
+		string _name;
         int _level;
-        long _maxExp;
+        long _money;
+        int _skillPoint;
+
+        // 능력치
         long _maxHp;
 		long _maxMp;
 		long _attack;
@@ -33,23 +37,36 @@ namespace Server.Game
         long _nowMp;
 		long _nowExp;
 
-		long _money;
-		int _skillPoint;
+		// Tmp
+        long _maxExp;
 
-		public Player()
+        public Player()
 		{
 			ObjectType = GameObjectType.Player;
 
+			_name = "Player_" + Id;
             _level = 1;
+			_maxExp = 100;
             _maxHp = 100;
 			_maxMp = 100;
-            _maxExp = 100;
             _attack = 10;
 			_moveSpeed = 200;
 
             _skillLevels.Add(1);
             for (int i = 1; i < 5; i++)
 				_skillLevels.Add(0);
+		}
+
+		public void SetPlayer(string name, int level, long maxHp, long maxMp, long attack, int mental, float moveSpeed)
+		{
+			_name = name;
+			_level = level;
+			_maxHp = maxHp;
+			_maxMp = maxMp;
+			_attack = attack;
+			_mental = mental;
+			_moveSpeed = moveSpeed;
+			// 추가 예정
 		}
 
 		public void Spawn()

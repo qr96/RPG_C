@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Server;
+using Server.Data;
 using Server.Game;
 using ServerCore;
 using System;
@@ -9,12 +10,31 @@ using System.Text;
 
 class PacketHandler
 {
+    public static void C_LoginGameHandler(PacketSession session, IMessage message)
+    {
+        C_LoginGame packet = message as C_LoginGame;
+        ClientSession clientSession = session as ClientSession;
+
+        //var resultCode = DataManager.Instance.TryGetPlayer(packet.Uno, out clientSession.MyPlayer);
+        var resultCode = 0;
+
+        S_LoginGame sendPacket = new S_LoginGame();
+        sendPacket.ResultCode = resultCode;
+        clientSession.Send(sendPacket);
+    }
+
+    public static void C_EnterGameHandler(PacketSession session, IMessage message)
+    {
+        C_EnterGame packet = message as C_EnterGame;
+        ClientSession clientSession = session as ClientSession;
+
+
+    }
+
 	public static void C_MoveHandler(PacketSession session, IMessage packet)
 	{
 		C_Move movePacket = packet as C_Move;
 		ClientSession clientSession = session as ClientSession;
-
-		//Console.WriteLine($"C_Move ({movePacket.PosInfo.PosX}, {movePacket.PosInfo.PosY})");
 
 		Player player = clientSession.MyPlayer;
 		if (player == null)
@@ -119,5 +139,21 @@ class PacketHandler
             return;
 
         room.Push(player.LearnSkill, c_skillLevelup.SkillCode);
+    }
+
+    public static void C_ChatHandler(PacketSession packetSession, IMessage message)
+    {
+        C_Chat packet = message as C_Chat;
+        ClientSession session = packetSession as ClientSession;
+
+        Player player = session.MyPlayer;
+        if (player == null) 
+            return;
+
+        GameRoom room = player.Room;
+        if (room == null)
+            return;
+
+        room.Push(room.HandleChat, player, packet.Chat);
     }
 }

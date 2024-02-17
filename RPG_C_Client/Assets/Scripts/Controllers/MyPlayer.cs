@@ -2,12 +2,24 @@ using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MyPlayer : MonoBehaviour
 {
-    public int Id;
+    public int Id
+    {
+        set
+        {
+            id = value;
+            if (nameTag != null)
+                nameTag.text = id.ToString();
+        }
+        get { return id; }
+    }
 
+    private int id;
     public float speed;
     public float attackDelay;
 
@@ -15,6 +27,8 @@ public class MyPlayer : MonoBehaviour
     GameObject avatar;
     Animator animator;
     GameObject attackImpact;
+    TMP_Text nameTag;
+    ChatBalloon chatBalloon;
 
     DateTime attackEnd;
     Vector2 input;
@@ -34,8 +48,6 @@ public class MyPlayer : MonoBehaviour
         StartCoroutine(SendMoveCo());
         itemCoolEndTimes.Add(1, DateTime.MinValue);
         itemCoolEndTimes.Add(2, DateTime.MinValue);
-        //UIManager.Instance.SetPlayerHPBar(nowHP, maxHP);
-        //UIManager.Instance.SetPlayerEXPBar(nowEXP, maxEXP);
     }
 
     private void Update()
@@ -57,12 +69,22 @@ public class MyPlayer : MonoBehaviour
     private void LateUpdate()
     {
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y + 16, transform.position.z - 16);
+
+        if (nameTag != null)
+            nameTag.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0f, 1.7f, 0f));
     }
 
     private void FixedUpdate()
     {
-        input.x = Input.GetAxis("Horizontal");
-        input.y = Input.GetAxis("Vertical");
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            input.x = Input.GetAxis("Horizontal");
+            input.y = Input.GetAxis("Vertical");
+        }
+        else
+        {
+            input = Vector2.zero;
+        }
 
         if (DateTime.Now >= attackEnd)
         {
@@ -79,6 +101,23 @@ public class MyPlayer : MonoBehaviour
                 animator.Play("Idle");
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        var tmp = Managers.Resource.Instantiate("UI/PlayerNameTag", UIManager.Instance.transform);
+        nameTag = tmp.GetComponent<TMP_Text>();
+        nameTag.transform.localScale = Vector3.one;
+
+        var tmpText = nameTag.GetComponent<TMP_Text>();
+        tmpText.text = Id.ToString();
+    }
+
+    private void OnDisable()
+    {
+        if (nameTag != null)
+            Managers.Resource.Destroy(nameTag.gameObject);
+        nameTag = null;
     }
 
     private void OnCollisionStay(Collision collision)
@@ -125,6 +164,25 @@ public class MyPlayer : MonoBehaviour
             }
             yield return new WaitForSeconds(0.2f);
         }
+    }
+
+    public void ShowChatBalloon(string chat)
+    {
+        if (chatBalloon == null)
+        {
+            var go = Managers.Resource.Instantiate("UI/ChatBalloon", UIManager.Instance.transform);
+            if (go == null)
+                return;
+
+            go.transform.localScale = Vector3.one;
+            chatBalloon = go.GetComponent<ChatBalloon>();
+        }
+
+        chatBalloon.ShowChat(gameObject, chat, () =>
+        {
+            Managers.Resource.Destroy(chatBalloon.gameObject);
+            chatBalloon = null;
+        });
     }
 
     #region packet

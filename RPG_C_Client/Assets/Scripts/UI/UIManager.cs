@@ -16,7 +16,8 @@ public class UIManager : MonoBehaviour
 
     Button menuButton;
     InfoPopup infoPopup;
-    
+
+    ChattingView chattingView;
 
     ItemSlot hpPotion;
     ItemSlot mpPotion;
@@ -44,6 +45,8 @@ public class UIManager : MonoBehaviour
 
         menuButton = transform.Find("MenuButton").GetComponent<Button>();
         infoPopup = transform.Find("InfoPopup").GetComponent<InfoPopup>();
+
+        chattingView = gameObject.Find<ChattingView>("ChattingView");
 
         hpPotion = transform.Find("HpPotion").GetComponent<ItemSlot>();
         mpPotion = transform.Find("MpPotion").GetComponent<ItemSlot>();
@@ -89,6 +92,11 @@ public class UIManager : MonoBehaviour
     public void SetSkillTabPopup(int skillPoint, List<int> skillLevels)
     {
         infoPopup.SetSkillTab(skillPoint, skillLevels);
+    }
+
+    public void RecvChat(string name, string msg)
+    {
+        chattingView.RecvChat(name, msg);
     }
 
     #region Object Pooling

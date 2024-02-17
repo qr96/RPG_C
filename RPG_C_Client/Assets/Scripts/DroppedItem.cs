@@ -13,6 +13,7 @@ public class DroppedItem : MonoBehaviour
     private void OnEnable()
     {
         itemTag = Managers.Resource.Instantiate("UI/ItemTag", UIManager.Instance.transform);
+        itemTag.transform.localScale = Vector3.one;
     }
 
     private void OnDisable()

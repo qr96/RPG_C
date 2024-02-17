@@ -22,9 +22,13 @@ class PacketManager
 	public Action<PacketSession, IMessage, ushort> CustomHandler { get; set; }
 
 	public void Register()
-	{		
-		_onRecv.Add((ushort)MsgId.CMove, MakePacket<C_Move>);
-		_handler.Add((ushort)MsgId.CMove, PacketHandler.C_MoveHandler);		
+	{
+        _onRecv.Add((ushort)MsgId.CLoginGame, MakePacket<C_LoginGame>);
+        _handler.Add((ushort)MsgId.CLoginGame, PacketHandler.C_LoginGameHandler);
+        _onRecv.Add((ushort)MsgId.CEnterGame, MakePacket<C_EnterGame>);
+        _handler.Add((ushort)MsgId.CEnterGame, PacketHandler.C_EnterGameHandler);
+        _onRecv.Add((ushort)MsgId.CMove, MakePacket<C_Move>);
+		_handler.Add((ushort)MsgId.CMove, PacketHandler.C_MoveHandler);
 		_onRecv.Add((ushort)MsgId.CSkill, MakePacket<C_Skill>);
 		_handler.Add((ushort)MsgId.CSkill, PacketHandler.C_SkillHandler);
         _onRecv.Add((ushort)MsgId.CUseItem, MakePacket<C_UseItem>);
@@ -37,6 +41,8 @@ class PacketManager
 		_handler.Add((ushort)MsgId.CSkillTabInfo, PacketHandler.C_SkillTabInfoHandler);
         _onRecv.Add((ushort)MsgId.CSkillLevelUp, MakePacket<C_SkillLevelUp>);
         _handler.Add((ushort)MsgId.CSkillLevelUp, PacketHandler.C_SkillLevelUpHandler);
+        _onRecv.Add((ushort)MsgId.CChat, MakePacket<C_Chat>);
+		_handler.Add((ushort)MsgId.CChat, PacketHandler.C_ChatHandler);
     }
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

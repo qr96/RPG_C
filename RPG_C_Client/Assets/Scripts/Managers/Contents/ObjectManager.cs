@@ -28,13 +28,17 @@ public class ObjectManager
 
                 MyPlayer = go.GetComponent<MyPlayer>();
                 MyPlayer.Id = info.ObjectId;
+
+				go.SetActive(true);
             }
             else
             {
                 GameObject go = Managers.Resource.Instantiate("Creature/Player");
                 go.name = info.Name;
                 _objects.Add(info.ObjectId, go);
-                go.transform.position = RBUtil.PosToVector3(info.PosInfo);
+                
+				go.transform.position = RBUtil.PosToVector3(info.PosInfo);
+				go.GetComponent<OtherPlayer>().Id = info.ObjectId;
             }
         }
 		else if (objectType == GameObjectType.Monster)

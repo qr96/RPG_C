@@ -212,6 +212,18 @@ namespace Server.Game
 			player.SendInventoryInfo();
         }
 
+		public void HandleChat(Player player, string chat)
+		{
+			if (player == null)
+				return;
+
+			S_Chat packet = new S_Chat();
+			packet.Id = player.Id;
+			packet.Chat = chat;
+
+			Broadcast(packet);
+		}
+
 		public Player FindPlayer(Func<Player, bool> condition)
 		{
 			foreach (Player player in _players.Values)

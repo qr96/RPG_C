@@ -82,17 +82,16 @@ public class Monster : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (sm.GetState() != MonsterState.Damaged)
+        if (sm.GetState() != MonsterState.Damaged && RBUtil.RemoveY(desPos - transform.position).sqrMagnitude > 0.01f)
         {
             // desPos 쳐다보기
             var lookVec = RBUtil.RemoveY(desPos - transform.position);
             if (lookVec != Vector3.zero && sm.GetState() != MonsterState.Damaged)
                 rigid.rotation = Quaternion.LookRotation(lookVec);
-        }
 
-        // desPos로 이동
-        if (sm.GetState() != MonsterState.Damaged)
+            // desPos로 이동
             rigid.velocity = RBUtil.InsertY(desPos - transform.position, rigid.velocity.y).normalized * speed;
+        }
 
         // 이동 animation
         if (sm.GetState() != MonsterState.Damaged && RBUtil.RemoveY(desPos - transform.position).sqrMagnitude > 1f)

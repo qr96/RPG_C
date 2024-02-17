@@ -7,6 +7,12 @@ using UnityEngine;
 
 class PacketHandler
 {
+	public static void S_LoginGameHandler(PacketSession session, IMessage message)
+	{
+		S_LoginGame packet = message as S_LoginGame;
+
+	}
+
 	public static void S_EnterGameHandler(PacketSession session, IMessage packet)
 	{
 		S_EnterGame enterGamePacket = packet as S_EnterGame;
@@ -167,4 +173,20 @@ class PacketHandler
 		S_SKillLevelUp s_SKillLevelUp = packet as S_SKillLevelUp;
 
 	}
+
+	public static void S_ChatHandler(PacketSession session, IMessage message)
+	{
+		S_Chat packet = message as S_Chat;
+
+		var target = Managers.Object.FindById(packet.Id);
+		if (target == null)
+			return;
+
+		if (packet.Id == Managers.Object.MyPlayer.Id)
+			target.GetComponent<MyPlayer>().ShowChatBalloon(packet.Chat);
+		else
+            target.GetComponent<OtherPlayer>().ShowChatBalloon(packet.Chat);
+
+        UIManager.Instance.RecvChat(packet.Id.ToString(), packet.Chat);
+    }
 }

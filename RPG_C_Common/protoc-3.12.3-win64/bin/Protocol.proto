@@ -5,26 +5,31 @@ import "google/protobuf/timestamp.proto";
 option csharp_namespace = "Google.Protobuf.Protocol";
 
 enum MsgId {
-  S_ENTER_GAME = 0;
-  S_LEAVE_GAME = 1;
-  S_SPAWN = 2;
-  S_DESPAWN = 3;
-  C_MOVE = 4;
-  S_MOVE = 5;
-  C_SKILL = 6;
-  S_SKILL = 7;
-  S_ONDAMAGE = 8;
-  S_CHANGE_STATUS = 9;
-  S_MONSTER_STATE = 10;
-  C_USE_ITEM = 11;
-  S_SPAWN_ITEM = 12;
-  C_PICKUP_ITEM = 13;
-  C_INVENTORY_INFO = 14;
-  S_INVENTORY_INFO = 15;
-  C_SKILL_TAB_INFO = 16;
-  S_SKILL_TAB_INFO = 17;
-  C_SKILL_LEVEL_UP = 18;
-  S_SKILL_LEVEL_UP = 19;
+  C_LOGIN_GAME = 0;
+  S_LOGIN_GAME = 1;
+  C_ENTER_GAME = 2;
+  S_ENTER_GAME = 3;
+  S_LEAVE_GAME = 4;
+  S_SPAWN = 5;
+  S_DESPAWN = 6;
+  C_MOVE = 7;
+  S_MOVE = 8;
+  C_SKILL = 9;
+  S_SKILL = 10;
+  S_ONDAMAGE = 11;
+  S_CHANGE_STATUS = 12;
+  S_MONSTER_STATE = 13;
+  C_USE_ITEM = 14;
+  S_SPAWN_ITEM = 15;
+  C_PICKUP_ITEM = 16;
+  C_INVENTORY_INFO = 17;
+  S_INVENTORY_INFO = 18;
+  C_SKILL_TAB_INFO = 19;
+  S_SKILL_TAB_INFO = 20;
+  C_SKILL_LEVEL_UP = 21;
+  S_SKILL_LEVEL_UP = 22;
+  C_CHAT = 23;
+  S_CHAT = 24;
 }
 
 enum CreatureState {
@@ -39,6 +44,17 @@ enum GameObjectType {
   PLAYER = 1;
   MONSTER = 2;
   PROJECTILE = 3;
+}
+
+message C_LoginGame {
+	string uno = 1;
+}
+
+message S_LoginGame {
+	int32 resultCode = 1;
+}
+
+message C_EnterGame {
 }
 
 message S_EnterGame {
@@ -139,6 +155,15 @@ message C_SkillLevelUp{
 
 message S_SKillLevelUp{
 	int32 result = 1;
+}
+
+message C_Chat{
+	string chat = 1;
+}
+
+message S_Chat{
+	int32 id = 1;
+	string chat = 2;
 }
 
 message ObjectInfo {
