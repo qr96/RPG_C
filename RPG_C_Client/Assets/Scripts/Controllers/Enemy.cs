@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Å¬¶óÀÌ¾ğÆ® ¸ó½ºÅÍ È®ÀÎ¿ë
+// í´ë¼ì´ì–¸íŠ¸ ëª¬ìŠ¤í„° í™•ì¸ìš©
 public class Enemy : MonoBehaviour
 {
     // Server

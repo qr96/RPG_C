@@ -22,7 +22,7 @@ public class ItemSlot : MonoBehaviour
     public void SetItem(int itemCode)
     {
         // TODO
-        // itemCode¿¡ ¸Â°Ô ÀÌ¹ÌÁö ¼³Á¤
+        // itemCodeì— ë§ê²Œ ì´ë¯¸ì§€ ì„¤ì •
     }
 
     public void SetCount(int count)

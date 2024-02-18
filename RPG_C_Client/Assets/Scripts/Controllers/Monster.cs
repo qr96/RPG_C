@@ -84,16 +84,16 @@ public class Monster : MonoBehaviour
     {
         if (sm.GetState() != MonsterState.Damaged && RBUtil.RemoveY(desPos - transform.position).sqrMagnitude > 0.01f)
         {
-            // desPos ÃÄ´Ùº¸±â
+            // desPos ì³ë‹¤ë³´ê¸°
             var lookVec = RBUtil.RemoveY(desPos - transform.position);
             if (lookVec != Vector3.zero && sm.GetState() != MonsterState.Damaged)
                 rigid.rotation = Quaternion.LookRotation(lookVec);
 
-            // desPos·Î ÀÌµ¿
+            // desPosë¡œ ì´ë™
             rigid.velocity = RBUtil.InsertY(desPos - transform.position, rigid.velocity.y).normalized * speed;
         }
 
-        // ÀÌµ¿ animation
+        // ì´ë™ animation
         if (sm.GetState() != MonsterState.Damaged && RBUtil.RemoveY(desPos - transform.position).sqrMagnitude > 1f)
             animator.Play("Move");
         else
@@ -121,7 +121,7 @@ public class Monster : MonoBehaviour
     {
         EffectPool.Instance.ShowDeadEffect(transform.position);
 
-        // hpBar ¹ÝÈ¯
+        // hpBar ë°˜í™˜
         if (hpBar != null)
         {
             UIManager.Instance.ReturnOtherHPBar(hpBar);

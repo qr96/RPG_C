@@ -27,11 +27,11 @@ public class LoginScene : MonoBehaviour
     {
         if (errorCode == 0)
         {
-            // ¼º°ø
+            // ì„±ê³µ
         }
         else if(errorCode == 1)
         {
-            // ½ÇÆÐ
+            // ì‹¤íŒ¨
         }
     }
 

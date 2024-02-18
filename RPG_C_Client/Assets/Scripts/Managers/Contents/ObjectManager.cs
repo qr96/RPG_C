@@ -45,7 +45,8 @@ public class ObjectManager
 		{
 			GameObject go = Managers.Resource.Instantiate("Creature/Monster");
 			go.name = info.Name;
-			_objects.Add(info.ObjectId, go);
+			if (!_objects.ContainsKey(info.ObjectId))
+				_objects.Add(info.ObjectId, go);
 
 			Monster monster = go.GetComponent<Monster>();
 			monster.Id = info.ObjectId;

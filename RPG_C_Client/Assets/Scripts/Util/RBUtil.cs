@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// RPG_B ÇÁ·ÎÁ§Æ®¸¸À» À§ÇÑ À¯Æ¿
+// RPG_B í”„ë¡œì íŠ¸ë§Œì„ ìœ„í•œ ìœ í‹¸
 public class RBUtil
 {
-    // yÃà ¾²Áö ¾ÊÀ½, ÀüÀûÀ¸·Î À¯´ÏÆ¼ ¹°¸®¿£Áø ÀÇÁ¸
+    // yì¶• ì“°ì§€ ì•ŠìŒ, ì „ì ìœ¼ë¡œ ìœ ë‹ˆí‹° ë¬¼ë¦¬ì—”ì§„ ì˜ì¡´
     public static Vector3 RemoveY(Vector3 vec)
     {
         return new Vector3(vec.x, 0f, vec.z);
@@ -22,7 +22,7 @@ public class RBUtil
         hex = hex.Replace("#", "");
         if (hex.Length != 6 && hex.Length != 8)
         {
-            Debug.LogError("¿Ã¹Ù¸¥ HEX °ªÀÌ ¾Æ´Õ´Ï´Ù.");
+            Debug.LogError("ì˜¬ë°”ë¥¸ HEX ê°’ì´ ì•„ë‹™ë‹ˆë‹¤.");
             return Color.white;
         }
 

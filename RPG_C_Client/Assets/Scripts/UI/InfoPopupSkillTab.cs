@@ -18,11 +18,11 @@ public class InfoPopupSkillTab : MonoBehaviour
 
     List<string> skillNames = new List<string>()
     {
-        "±âº»°ø°İ", "ÇÏÃ¼°­È­", "¾àÁ¡Æ÷Âø", "Áö±¸·Â Çâ»ó", "ºÒ±¼"
+        "ê¸°ë³¸ê³µê²©", "í•˜ì²´ê°•í™”", "ì•½ì í¬ì°©", "ì§€êµ¬ë ¥ í–¥ìƒ", "ë¶ˆêµ´"
     };
     List<string> skillEffects = new List<string>()
     {
-        "°ø°İ·Â", "ÀÌµ¿¼Óµµ", "Ä¡¸íÈ®·ü", "ÃÖ´ë ½ºÅÂ¹Ì³Ê", "Á¤½Å·Â"
+        "ê³µê²©ë ¥", "ì´ë™ì†ë„", "ì¹˜ëª…í™•ë¥ ", "ìµœëŒ€ ìŠ¤íƒœë¯¸ë„ˆ", "ì •ì‹ ë ¥"
     };
 
     private void Awake()
@@ -74,9 +74,9 @@ public class InfoPopupSkillTab : MonoBehaviour
     void SetSkillInfo(string skillName, string statName, int level)
     {
         var info = $"<color=white><size=36>{skillName}</size></color>\n" +
-            $"<color=#B3B3B3>[ÇöÀç ·¹º§ {level}]\n" +
+            $"<color=#B3B3B3>[í˜„ì¬ ë ˆë²¨ {level}]\n" +
             $"{statName} +{level * 2}</color>\n" +
-            $"<color=#505050>[´ÙÀ½ ·¹º§]\n" +
+            $"<color=#505050>[ë‹¤ìŒ ë ˆë²¨]\n" +
             $"{statName} +{level * 2 + 2}]</color>";
 
         infoText.text = info;
@@ -92,7 +92,7 @@ public class InfoPopupSkillTab : MonoBehaviour
     public void SetRemainPoint(int point)
     {
         sp = point;
-        remainPoint.text = $"³²Àº Æ÷ÀÎÆ® : {point}";
+        remainPoint.text = $"ë‚¨ì€ í¬ì¸íŠ¸ : {point}";
         learnButton.enabled = sp > 0;
     }
 
