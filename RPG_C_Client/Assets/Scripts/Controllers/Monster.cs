@@ -140,16 +140,19 @@ public class Monster : MonoBehaviour
             target = Managers.Object.FindById(monsterState.TargetId);
     }
 
-    public void OnDamagedClient(GameObject attacker, Vector3 direction)
+    public void OnDamagedClient(GameObject attacker, int direction)
     {
+        if (direction == 0) return;
         if (attacker != null) target = attacker;
+        
+        var directVec = RBUtil.AttackDirec3(direction);
 
         sm.SetState(MonsterState.Damaged);
 
-        Vector3 pushVec = direction.normalized * pushPower;
+        Vector3 pushVec = directVec * pushPower;
         rigid.velocity = RBUtil.InsertY(Vector3.zero, rigid.velocity.y);
         rigid.AddForce(pushVec, ForceMode.Impulse);
-        rigid.rotation = Quaternion.LookRotation(-direction);
+        rigid.rotation = Quaternion.LookRotation(-directVec);
 
         knockBackTime = DateTime.Now.AddSeconds(knockBackDuration);
     }

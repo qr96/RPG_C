@@ -3,6 +3,7 @@ using Google.Protobuf.Protocol;
 using ServerCore;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 class PacketHandler
@@ -63,6 +64,21 @@ class PacketHandler
         }
     }
 
+	public static void S_AttackHandler(PacketSession session, IMessage message)
+	{
+		S_Attack packet = message as S_Attack;
+
+        var go = Managers.Object.FindById(packet.ObjectId);
+        if (go == null)
+            return;
+
+        if (packet.ObjectId == Managers.Object.MyPlayer.Id)
+			return;
+
+		var other = go.GetComponent<OtherPlayer>();
+		other.AttackMotion(packet.Direction);
+	}
+
 	public static void S_SkillHandler(PacketSession session, IMessage packet)
 	{
 		S_Skill skillPacket = packet as S_Skill;
@@ -90,10 +106,13 @@ class PacketHandler
 		GameObject attacker = Managers.Object.FindById(damagePacket.AttackerId);
 		if (damagePacket.AttackerId != Managers.Object.MyPlayer.Id)
 		{
+            /*
 			var player = attacker.GetComponent<OtherPlayer>();
 			if (player != null)
 				player.AttackMotion();
-		}
+			*/
+            monster.OnDamagedClient(attacker, damagePacket.Direction);
+        }
 
 		monster.OnDamagedServer(attacker, damagePacket.Damage, damagePacket.RemainHp, damagePacket.MaxHp);
     }

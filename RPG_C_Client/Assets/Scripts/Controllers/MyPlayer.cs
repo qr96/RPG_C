@@ -127,21 +127,27 @@ public class MyPlayer : MonoBehaviour
             var enemy = collision.transform.GetComponent<Monster>();
             var enemyVec = RBUtil.RemoveY(enemy.transform.position - transform.position);
             var inputVec = new Vector3(input.x, 0f, input.y);
+            int attackDir = 0;
 
             if (Mathf.Abs(Mathf.Acos(Vector3.Dot(inputVec, enemyVec) / (inputVec.magnitude * enemyVec.magnitude) * Mathf.Rad2Deg)) > 90f)
                 return;
 
             if (input.x == 0 && input.y == 0)
             {
+                if (!enemy.target.Equals(gameObject))
+                    return;
+
+                attackDir = RBUtil.AttackVecToDirec(enemyVec);
                 rigid.rotation = Quaternion.LookRotation(enemyVec);
-                enemy.OnDamagedClient(gameObject, enemyVec);
             }
             else
             {
-                enemy.OnDamagedClient(gameObject, inputVec);
+                attackDir = RBUtil.AttackVecToDirec(input);
             }
 
-            SendSkill(1, enemy.Id);
+            //SendSkill(1, enemy.Id);
+            SendAttack(attackDir, enemy.Id);
+            enemy.OnDamagedClient(gameObject, attackDir);
 
             animator.Play("Attack");
             attackEnd = DateTime.Now.AddSeconds(attackDelay);
@@ -186,6 +192,14 @@ public class MyPlayer : MonoBehaviour
     }
 
     #region packet
+
+    private void SendAttack(int direction, int targetId)
+    {
+        C_Attack packet = new C_Attack();
+        packet.Direction = direction;
+        packet.TargetId = targetId;
+        Managers.Network.Send(packet);
+    }
 
     private void SendSkill(int skillId, int targetId)
     {

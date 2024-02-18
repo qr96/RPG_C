@@ -34,7 +34,7 @@ namespace Server.Game
             return nowHP <= 0 && DateTime.Now > respawnTime;
         }
 
-        public void OnDamaged(Player attacker, long damage)
+        public void OnDamaged(Player attacker, int direction, long damage)
         {
             if (Room == null) return;
 
@@ -47,18 +47,19 @@ namespace Server.Game
                 SendSpawnItem(attacker, new List<ItemInfo>() { new ItemInfo() { ItemCode = 1, Count = 100 } });
             }
 
-            SendOnDamage(attacker, damage);
+            SendOnDamage(attacker, direction, damage);
 
             attacker.OnDamaged(this, power);
         }
 
         #region Packet
 
-        void SendOnDamage(Player attacker, long damage)
+        void SendOnDamage(Player attacker, int direction, long damage)
         {
             S_Ondamage packet = new S_Ondamage();
             packet.ObjectId = Id;
             packet.AttackerId = attacker.Id;
+            packet.Direction = direction;
             packet.Damage = damage;
             packet.RemainHp = nowHP;
             packet.MaxHp = maxHP;

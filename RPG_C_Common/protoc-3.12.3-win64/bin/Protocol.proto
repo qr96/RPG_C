@@ -14,22 +14,24 @@ enum MsgId {
   S_DESPAWN = 6;
   C_MOVE = 7;
   S_MOVE = 8;
-  C_SKILL = 9;
-  S_SKILL = 10;
-  S_ONDAMAGE = 11;
-  S_CHANGE_STATUS = 12;
-  S_MONSTER_STATE = 13;
-  C_USE_ITEM = 14;
-  S_SPAWN_ITEM = 15;
-  C_PICKUP_ITEM = 16;
-  C_INVENTORY_INFO = 17;
-  S_INVENTORY_INFO = 18;
-  C_SKILL_TAB_INFO = 19;
-  S_SKILL_TAB_INFO = 20;
-  C_SKILL_LEVEL_UP = 21;
-  S_SKILL_LEVEL_UP = 22;
-  C_CHAT = 23;
-  S_CHAT = 24;
+  C_ATTACK = 9;
+  S_ATTACK = 10;
+  C_SKILL = 11;
+  S_SKILL = 12;
+  S_ONDAMAGE = 13;
+  S_CHANGE_STATUS = 14;
+  S_MONSTER_STATE = 15;
+  C_USE_ITEM = 16;
+  S_SPAWN_ITEM = 17;
+  C_PICKUP_ITEM = 18;
+  C_INVENTORY_INFO = 19;
+  S_INVENTORY_INFO = 20;
+  C_SKILL_TAB_INFO = 21;
+  S_SKILL_TAB_INFO = 22;
+  C_SKILL_LEVEL_UP = 23;
+  S_SKILL_LEVEL_UP = 24;
+  C_CHAT = 25;
+  S_CHAT = 26;
 }
 
 enum CreatureState {
@@ -81,6 +83,17 @@ message S_Move {
 	PositionInfo posInfo = 2;
 }
 
+message C_Attack {
+	int32 direction = 1;
+	int32 targetId = 2;
+}
+
+message S_Attack {
+	int32 objectId = 1;
+	int32 direction = 2;
+	int32 target = 3;
+}
+
 message C_Skill {
 	int32 skillId = 1;
 	int32 targetId = 2;
@@ -95,9 +108,10 @@ message S_Skill {
 message S_Ondamage {
 	int32 objectId = 1;
 	int32 attackerId = 2;
-	int64 damage = 3;
-	int64 remainHp = 4;
-	int64 maxHp = 5;
+	int32 direction = 3;
+	int64 damage = 4;
+	int64 remainHp = 5;
+	int64 maxHp = 6;
 }
 
 message S_ChangeStatus{

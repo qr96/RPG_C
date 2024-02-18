@@ -9,6 +9,8 @@ namespace Server.Game
 	{
 		public ClientSession Session { get; set; }
 
+		DateTime attackCool = DateTime.MinValue;
+
 		// 스킬 사용불가한 시간 딕셔너리
 		Dictionary<int, DateTime> skillCoolTimes = new Dictionary<int, DateTime>();
 
@@ -85,11 +87,32 @@ namespace Server.Game
 			base.OnDead(attacker);
 		}
 
+		public bool CheckAttackCool()
+		{
+			return DateTime.Now > attackCool;
+        }
+
 		public bool CheckSkillCool(int skillId)
 		{
 			if (!skillCoolTimes.ContainsKey(skillId)) return true;
 			return DateTime.Now > skillCoolTimes[skillId];
 		}
+
+		public void Attack(Monster target, int direction)
+		{
+			attackCool = DateTime.Now.AddSeconds(0.5f);
+
+            if (_nowMp < 10)
+            {
+				target.OnDamaged(this, direction, 0);
+            }
+            else
+            {
+                var damage = (_attack + _skillAttack) * ((_nowMp * 100 / _maxMp - 100) * (100 - _mental - _skillMental) / 100 + 100) / 100;
+				target.OnDamaged(this, direction, damage);
+                _nowMp -= 10;
+            }
+        }
 
 		public void UseSkill(int skillId, Monster target)
 		{
@@ -102,12 +125,12 @@ namespace Server.Game
 			{
                 if (_nowMp < 10)
 				{
-					target.OnDamaged(this, 0);
+					target.OnDamaged(this, 0, 0);
                 }
 				else
 				{
 					var damage = (_attack + _skillAttack) * ((_nowMp * 100 / _maxMp - 100) * (100 - _mental - _skillMental) / 100 + 100) / 100;
-                    target.OnDamaged(this, damage);
+					target.OnDamaged(this, 0, damage);
                     _nowMp -= 10;
                 }
             }
@@ -202,6 +225,14 @@ namespace Server.Game
 			foreach (var skill in _skillLevels)
 				packet.SkillLevels.Add(skill);
 			Session.Send(packet);
+		}
+
+		public void SendAttack(int direction)
+		{
+			S_Attack packet = new S_Attack();
+			packet.ObjectId = Id;
+			packet.Direction = direction;
+			Room.Broadcast(packet);
 		}
 
         #endregion

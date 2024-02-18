@@ -41,7 +41,7 @@ public class OtherPlayer : MonoBehaviour
         if (desPos != Vector3.zero)
         {
             //var movePos = Vector3.Lerp(transform.position, desPos, Time.deltaTime * speed);
-            var movePos = Vector3.MoveTowards(transform.position, desPos, Time.deltaTime * speed);
+            var movePos = Vector3.MoveTowards(transform.position, RBUtil.InsertY(desPos, transform.position.y), Time.deltaTime * speed);
             var lookVec = RBUtil.RemoveY(desPos - transform.position);
             if (lookVec != Vector3.zero)
             {
@@ -84,8 +84,9 @@ public class OtherPlayer : MonoBehaviour
         this.desPos = desPos;
     }
 
-    public void AttackMotion()
+    public void AttackMotion(int direction)
     {
+        transform.rotation = Quaternion.LookRotation(RBUtil.AttackDirec3(direction));
         animator.Play("Attack");
     }
 

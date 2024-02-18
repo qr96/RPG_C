@@ -171,6 +171,23 @@ namespace Server.Game
 			Broadcast(resMovePacket);
 		}
 
+		public void HandleAttack(Player player, C_Attack packet)
+		{
+			if (player == null)
+				return;
+
+			if (player.CheckAttackCool())
+			{
+                Monster monster;
+                if (!_monsters.TryGetValue(packet.TargetId, out monster))
+                    return;
+
+				player.Attack(monster, packet.Direction);
+				player.SendAttack(packet.Direction);
+                player.SendStatInfo();
+            }
+		}
+
 		public void HandleSkill(Player player, C_Skill skillPacket)
 		{
 			if (player == null)
