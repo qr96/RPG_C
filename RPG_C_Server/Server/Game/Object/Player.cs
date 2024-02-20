@@ -123,16 +123,7 @@ namespace Server.Game
 
             if (skillId == 1)
 			{
-                if (_nowMp < 10)
-				{
-					target.OnDamaged(this, 0, 0);
-                }
-				else
-				{
-					var damage = (_attack + _skillAttack) * ((_nowMp * 100 / _maxMp - 100) * (100 - _mental - _skillMental) / 100 + 100) / 100;
-					target.OnDamaged(this, 0, damage);
-                    _nowMp -= 10;
-                }
+
             }
         }
 
@@ -157,11 +148,11 @@ namespace Server.Game
 			{
                 _level++;
 				_nowExp -= _maxExp;
-                _maxExp = 100 + 20 * _level;
+				_maxExp = 100 + 100 * _level;
                 _nowHp = _maxHp;
                 _nowMp = _maxMp;
                 //_attack += 2;
-				_skillPoint += 30;
+				_skillPoint += 10;
             }
 		}
 

@@ -2,6 +2,7 @@
 using Google.Protobuf.Protocol;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Server.Game
 {
@@ -18,20 +19,22 @@ namespace Server.Game
 		public Random rand = new Random();
 
 		public Map Map { get; private set; } = new Map();
+		List<Vector2> monsterPosList = new List<Vector2>()
+		{
+			new Vector2(6f, 5f), new Vector2(3f, 1f), new Vector2(10f, -4f),
+			new Vector2(-16f, 5f), new Vector2(-30f, -20f), new Vector2(-10f, -27f), new Vector2(3f, -20f), new Vector2(20f, -20f)
+		};
 
 		public void Init(int mapId)
 		{
 			//Map.LoadMap(mapId);
 
-			Monster monster0 = ObjectManager.Instance.Add<Monster>();
-			monster0.Info.PosInfo = new PositionInfo() { PosX = 6f, PosY = 0f, PosZ = 5f };
-            Monster monster1 = ObjectManager.Instance.Add<Monster>();
-            monster1.Info.PosInfo = new PositionInfo() { PosX = 3f, PosY = 0f, PosZ = 1f };
-            Monster monster2 = ObjectManager.Instance.Add<Monster>();
-            monster2.Info.PosInfo = new PositionInfo() { PosX = 10f, PosY = 0f, PosZ = -4f };
-            EnterGame(monster0);
-            EnterGame(monster1);
-            EnterGame(monster2);
+			foreach (var pos in monsterPosList)
+			{
+				Monster monster = ObjectManager.Instance.Add<Monster>();
+				monster.Info.PosInfo = new PositionInfo() { PosX = pos.X, PosY = 0f, PosZ = pos.Y };
+				EnterGame(monster);
+            }
         }
 
 		// 누군가 주기적으로 호출해줘야 한다
