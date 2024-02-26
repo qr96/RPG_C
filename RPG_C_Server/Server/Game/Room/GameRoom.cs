@@ -16,24 +16,31 @@ namespace Server.Game
 		DateTime respawnTime = DateTime.MinValue;
 		float respawnDelay = 20f;
 
-		public Random rand = new Random();
+		public Random Rand = new Random();
 
 		public Map Map { get; private set; } = new Map();
-		List<Vector2> monsterPosList = new List<Vector2>()
+		List<Vector3> monsterPosList = new List<Vector3>()
 		{
-			new Vector2(6f, 5f), new Vector2(3f, 1f), new Vector2(10f, -4f),
-			new Vector2(-16f, 5f), new Vector2(-30f, -20f), new Vector2(-10f, -27f), new Vector2(3f, -20f), new Vector2(20f, -20f)
+			new Vector3(6f, 0f, 5f), new Vector3(3f, 0f,1f), new Vector3(10f, 0f, -4f),
+			new Vector3(-16f, 0f, 5f), new Vector3(-30f, 0f, -20f), new Vector3(-10f, 0f, -27f), new Vector3(3f, 0f, -20f), new Vector3(20f, 0f, -20f)
+		};
+
+		List<Vector3> monsterMovePoint2 = new List<Vector3>()
+		{
+			new Vector3(6f, 0f, 10f), new Vector3(8f, 0f,1f), new Vector3(4f, 0f, -4f),
+			new Vector3(-12f, 0f, 5f), new Vector3(-26f, 0f, -20f), new Vector3(-10f, 0f, -22f), new Vector3(9f, 0f, -20f), new Vector3(15f, 0f, -20f)
 		};
 
 		public void Init(int mapId)
 		{
 			//Map.LoadMap(mapId);
 
-			foreach (var pos in monsterPosList)
+			for (int i = 0; i < monsterPosList.Count; i++)
 			{
-				Monster monster = ObjectManager.Instance.Add<Monster>();
-				monster.Info.PosInfo = new PositionInfo() { PosX = pos.X, PosY = 0f, PosZ = pos.Y };
-				EnterGame(monster);
+                Monster monster = ObjectManager.Instance.Add<Monster>();
+				monster.SetNowPos(monsterPosList[i]);
+				monster.SetMovePoints(monsterPosList[i], monsterMovePoint2[i]);
+                EnterGame(monster);
             }
         }
 
@@ -41,9 +48,10 @@ namespace Server.Game
 		public void Update()
 		{
 			foreach(var player in _players.Values)
-			{
-				player.Update();
-			}
+                player.Update();
+
+            foreach (var monster in _monsters.Values)
+				monster.Update();
 
 			if (DateTime.Now > respawnTime)
 			{
@@ -102,8 +110,8 @@ namespace Server.Game
 			{
 				Monster monster = gameObject as Monster;
 				_monsters.Add(monster.Id, monster);
-				monster.Spawn();
 				monster.Room = this;
+                monster.Spawn();
             }
 
 			// 타인한테 정보 전송

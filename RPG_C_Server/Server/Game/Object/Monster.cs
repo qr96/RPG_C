@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Protocol;
+using Server.Data;
 using Server.Util;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,25 @@ namespace Server.Game
         long power;
         float speed = 2f;
         DateTime respawnTime;
+        DateTime idleEndTime;
+        DateTime moveEndTime;
+        Vector3 nowPos;
+        Vector3 desPos;
+        Player target;
+
+        List<Vector3> movePoints = new List<Vector3>();
+
+        StateMachine<MonsterState> sm = new StateMachine<MonsterState>();
+
+        public enum MonsterState
+        {
+            None,
+            Idle,
+            Move,
+            Chase,
+            Damaged,
+            Die
+        }
 
         public Monster()
         {
@@ -21,11 +41,68 @@ namespace Server.Game
 
             maxHP = 100;
             power = 1;
+
+            sm.SetEvent(MonsterState.Idle,
+                (prev) =>
+                {
+                    var idleTime = DataManager.Rand.NextDouble() * 4 + 4f;
+                    idleEndTime = DateTime.Now.AddSeconds(idleTime);
+                    SendState();
+                },
+                () =>
+                {
+                    if (DateTime.Now > idleEndTime)
+                        sm.SetState(MonsterState.Move);
+                });
+            sm.SetEvent(MonsterState.Move,
+                (prev) =>
+                {
+                    var posIndex = Room.Rand.Next(0, movePoints.Count);
+                    var moveTime = 0f;
+
+                    desPos = movePoints[posIndex];
+                    moveTime = (desPos - nowPos).Length() / speed;
+
+                    moveEndTime = DateTime.Now.AddSeconds(moveTime);
+                    SetNowPos(desPos);
+                    SendState();
+                },
+                () =>
+                {
+                    if (DateTime.Now > moveEndTime)
+                        sm.SetState(MonsterState.Idle);
+                });
+            sm.SetEvent(MonsterState.Chase, null,
+                () =>
+                {
+                    if (target == null)
+                        sm.SetState(MonsterState.Idle);
+                });
+        }
+
+        public void SetNowPos(Vector3 pos)
+        {
+            nowPos = pos;
+            PosInfo.PosX = pos.X;
+            PosInfo.PosY = pos.Y;
+            PosInfo.PosZ = pos.Z;
+        }
+
+        public void SetMovePoints(Vector3 firstPoint, Vector3 secondPoint)
+        {
+            movePoints.Add(firstPoint);
+            movePoints.Add(secondPoint);
+        }
+
+        public void Update()
+        {
+            sm.Update();
         }
 
         public void Spawn()
         {
             nowHP = maxHP;
+            sm.SetState(MonsterState.Idle);
         }
 
         // 부활 가능 상태 체크
@@ -46,13 +123,25 @@ namespace Server.Game
                 respawnTime = DateTime.Now.AddSeconds(15f);
                 SendSpawnItem(attacker, new List<ItemInfo>() { new ItemInfo() { ItemCode = 1, Count = 100 } });
             }
-
+            else
+            {
+                sm.SetState(MonsterState.Chase);
+            }
             SendOnDamage(attacker, direction, damage);
 
             attacker.OnDamaged(this, power);
         }
 
         #region Packet
+
+        void SendState()
+        {
+            S_MonsterState packet = new S_MonsterState();
+            packet.ObjectId = Id;
+            packet.State = (int)sm.GetState();
+            packet.NowPos = PosInfo;
+            Room.Broadcast(packet);
+        }
 
         void SendOnDamage(Player attacker, int direction, long damage)
         {

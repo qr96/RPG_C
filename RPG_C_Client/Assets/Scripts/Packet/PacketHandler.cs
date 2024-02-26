@@ -106,11 +106,12 @@ class PacketHandler
 		GameObject attacker = Managers.Object.FindById(damagePacket.AttackerId);
 		if (damagePacket.AttackerId != Managers.Object.MyPlayer.Id)
 		{
-            /*
+			/*
 			var player = attacker.GetComponent<OtherPlayer>();
 			if (player != null)
 				player.AttackMotion();
 			*/
+			Debug.Log("Attacked");
             monster.OnDamagedClient(attacker, damagePacket.Direction);
         }
 
@@ -135,7 +136,7 @@ class PacketHandler
         if (go == null)
             return;
 
-		if (ObjectManager.GetObjectTypeById(statePacket.ObjectId) == GameObjectType.Monster)
+        if (ObjectManager.GetObjectTypeById(statePacket.ObjectId) == GameObjectType.Monster)
 		{
             var monster = go.GetComponent<Monster>();
 			monster.RecvMonsterState(statePacket);

@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Google.Protobuf.Protocol;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
@@ -12,17 +13,21 @@ public class Monster : MonoBehaviour
     public float hpBarDuration = 5f;
     public float knockBackDuration;
 
+    public List<Vector3> posList;
+
     public Vector3 desPos;
     Vector3 bodyPos;
     DateTime knockBackTime;
     DateTime hideHpBarTime;
+
+    DateTime idleEndTime;
 
     StateMachine<MonsterState> sm;
     GameObject body;
     Rigidbody rigid;
     Animator animator;
 
-    public GameObject target;
+    GameObject target;
     GuageBar hpBar;
 
     public enum MonsterState
@@ -57,8 +62,10 @@ public class Monster : MonoBehaviour
                 if (DateTime.Now > knockBackTime)
                     sm.SetState(MonsterState.Chase);
             });
-    }
 
+        sm.SetState(MonsterState.Idle);
+    }
+    DateTime start;
     private void Start()
     {
         desPos = transform.position;
@@ -177,5 +184,11 @@ public class Monster : MonoBehaviour
 
         if (nowHp <= 0)
             OnDead();
+    }
+
+    public bool IsTargetGo(GameObject compare)
+    {
+        if (target == null) return false;
+        return target.Equals(compare);
     }
 }

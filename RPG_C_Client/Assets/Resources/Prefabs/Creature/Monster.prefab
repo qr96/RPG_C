@@ -98,11 +98,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 0
   speed: 2
-  pushPower: 5
+  pushPower: 6
   hpBarDuration: 5
   knockBackDuration: 0.8
+  posList: []
   desPos: {x: 0, y: 0, z: 0}
-  target: {fileID: 0}
 --- !u!114 &7404675441688945153
 MonoBehaviour:
   m_ObjectHideFlags: 0

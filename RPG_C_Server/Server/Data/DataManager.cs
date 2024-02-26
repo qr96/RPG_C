@@ -23,6 +23,8 @@ namespace Server.Data
 
 		object _playerLock = new object();
 
+		public static Random Rand = new Random();
+
 		DataManager()
 		{
 			Instance = this;

@@ -129,12 +129,14 @@ public class MyPlayer : MonoBehaviour
             var inputVec = new Vector3(input.x, 0f, input.y);
             int attackDir = 0;
 
-            if (Mathf.Abs(Mathf.Acos(Vector3.Dot(inputVec, enemyVec) / (inputVec.magnitude * enemyVec.magnitude) * Mathf.Rad2Deg)) > 90f)
+            var deg = Mathf.Abs(Vector3.Angle(enemyVec, inputVec));
+
+            if (deg > 90f)
                 return;
 
             if (input.x == 0 && input.y == 0)
             {
-                if (!enemy.target.Equals(gameObject))
+                if (!enemy.IsTargetGo(gameObject))
                     return;
 
                 attackDir = RBUtil.AttackVecToDirec(enemyVec);
@@ -145,7 +147,6 @@ public class MyPlayer : MonoBehaviour
                 attackDir = RBUtil.AttackVecToDirec(input);
             }
 
-            //SendSkill(1, enemy.Id);
             SendAttack(attackDir, enemy.Id);
             enemy.OnDamagedClient(gameObject, attackDir);
 
