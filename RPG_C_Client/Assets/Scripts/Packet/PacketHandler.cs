@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -131,6 +132,7 @@ class PacketHandler
     public static void S_MonsterStateHandler(PacketSession session, IMessage packet)
 	{
         S_MonsterState statePacket = packet as S_MonsterState;
+		//Debug.Log($"S_MonsterState {statePacket.State}");
 
         GameObject go = Managers.Object.FindById(statePacket.ObjectId);
         if (go == null)
@@ -149,7 +151,7 @@ class PacketHandler
 
 		foreach (var item in itemPacket.ItemInfos)
 		{
-            var money = Managers.Resource.Instantiate("Item/GoldCoins");
+            var money = Managers.Resource.Instantiate("Item/GoldCoin");
             var droppedItem = money.GetComponent<DroppedItem>();
 			var itemTmp = item;
 
@@ -186,6 +188,12 @@ class PacketHandler
 			skillLevels.Add(skillLevel);
 
 		UIManager.Instance.SetSkillTabPopup(skillPoint, skillLevels);
+
+		// 임시처리
+		Managers.Object.MyPlayer.SetSpeed(200f + 10f * Math.Min(30f, skillLevels[1]));
+        var attackCoolDown = 0.01f * Math.Min(30f, skillLevels[2]);
+        var attackCool = DateTime.Now.AddSeconds(0.5f - attackCoolDown);
+		Managers.Object.MyPlayer.SetAttackDelay(attackCoolDown);
     }
 
 	public static void S_SkillLevelUpHandler(PacketSession session, IMessage packet)

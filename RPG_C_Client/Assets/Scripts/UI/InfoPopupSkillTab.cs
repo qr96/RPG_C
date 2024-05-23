@@ -18,14 +18,14 @@ public class InfoPopupSkillTab : MonoBehaviour
 
     List<string> skillNames = new List<string>()
     {
-        "기본공격", "하체강화", "약점포착", "지구력 향상", "불굴"
+        "기본공격", "하체강화", "약점포착", "부스트", "불굴"
     };
     List<string> skillEffects = new List<string>()
     {
-        "공격력", "이동속도", "치명확률", "최대 스태미너", "정신력"
+        "공격력", "이동속도", "치명확률", "공격속도", "정신력"
     };
 
-    private void Awake()
+    public void Awake()
     {
         learnButton = gameObject.Find<Button>("Info/SkillUp");
         infoText = gameObject.Find<TMP_Text>("Info/Scroll View/Viewport/Content/Text");

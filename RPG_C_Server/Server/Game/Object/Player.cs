@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Protocol;
+using Server.Data;
 using Server.Game.Collider;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,14 @@ namespace Server.Game
 		Dictionary<int, DateTime> skillCoolTimes = new Dictionary<int, DateTime>();
 
 		List<int> _skillLevels = new List<int>();
+		List<Item> _inventory = new List<Item>();
 
 		// 유저 정보
 		string _name;
         int _level;
         long _money;
         int _skillPoint;
+		int _invenSize;
 
         // 능력치
         long _maxHp;
@@ -48,6 +51,7 @@ namespace Server.Game
 
 			_name = "Player_" + Id;
             _level = 1;
+			_invenSize = 16;
 			_maxExp = 100;
             _maxHp = 100;
 			_maxMp = 100;
@@ -100,7 +104,8 @@ namespace Server.Game
 
 		public void Attack(Monster target, int direction)
 		{
-			attackCool = DateTime.Now.AddSeconds(0.5f);
+			var attackCoolDown = 0.01f * Math.Min(30f, _skillLevels[2]);
+			attackCool = DateTime.Now.AddSeconds(0.5f - attackCoolDown);
 
             if (_nowMp < 10)
             {
@@ -108,9 +113,8 @@ namespace Server.Game
             }
             else
             {
-                var damage = (_attack + _skillAttack) * ((_nowMp * 100 / _maxMp - 100) * (100 - _mental - _skillMental) / 100 + 100) / 100;
+				var damage = (_attack + _skillAttack) * ((_maxHp - _nowHp) * 100 / _maxHp + 100) / 100;
 				target.OnDamaged(this, direction, damage);
-                _nowMp -= 10;
             }
         }
 
@@ -184,6 +188,43 @@ namespace Server.Game
             UpdateSkillStats();
             SendSkillTabInfo();
         }
+ 
+		public void AddItem(int itemCode, int count)
+		{
+			bool alreadyHave = false;
+			foreach (var item in _inventory)
+			{
+				if (item.id == itemCode)
+				{
+                    item.count += count;
+					alreadyHave = true;
+                }
+			}
+
+            if (!alreadyHave)
+            {
+				foreach (var item in _inventory)
+				{
+					if (item.id == 0)
+					{
+						item.id = itemCode;
+						item.count = 0;
+					}
+				}
+            }
+        }
+
+		// 0: success, 1: not enough money
+		public int SpendMoney(long cost)
+		{
+			if (_money - cost >= 0)
+			{
+				_money -= cost;
+				return 0;
+			}
+			else
+				return 1;
+		}
 
         #region Packet
 

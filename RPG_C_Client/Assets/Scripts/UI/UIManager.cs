@@ -91,7 +91,8 @@ public class UIManager : MonoBehaviour
 
     public void SetSkillTabPopup(int skillPoint, List<int> skillLevels)
     {
-        infoPopup.SetSkillTab(skillPoint, skillLevels);
+        if (infoPopup.isActiveAndEnabled)
+            infoPopup.SetSkillTab(skillPoint, skillLevels);
     }
 
     public void RecvChat(string name, string msg)

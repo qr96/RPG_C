@@ -40,6 +40,7 @@ public class InfoPopup : MonoBehaviour
     {
         SendInfoPacket();
         SendSkillTabInfo();
+        gameObject.transform.SetAsLastSibling();
         gameObject.SetActive(true);
     }
 
@@ -55,7 +56,8 @@ public class InfoPopup : MonoBehaviour
 
     public void SetSkillTab(int skillPoint, List<int> skillLevels)
     {
-        skillTab.SetSkillLevels(skillPoint, skillLevels);
+        if (skillTab.isActiveAndEnabled)
+            skillTab.SetSkillLevels(skillPoint, skillLevels);
     }
 
     void SelectTab(int index)

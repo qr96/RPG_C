@@ -20,8 +20,6 @@ public class Monster : MonoBehaviour
     DateTime knockBackTime;
     DateTime hideHpBarTime;
 
-    DateTime idleEndTime;
-
     StateMachine<MonsterState> sm;
     GameObject body;
     Rigidbody rigid;
@@ -65,7 +63,7 @@ public class Monster : MonoBehaviour
 
         sm.SetState(MonsterState.Idle);
     }
-    DateTime start;
+
     private void Start()
     {
         desPos = transform.position;

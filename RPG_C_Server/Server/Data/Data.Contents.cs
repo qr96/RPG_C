@@ -32,15 +32,6 @@ namespace Server.Data
 		public string name;
 		public float cooldown;
 		public int damage;
-		public ProjectileInfo projectile;
-	}
-
-	public class ProjectileInfo
-	{
-		public string name;
-		public float speed;
-		public int range;
-		public string prefab;
 	}
 
 	[Serializable]
@@ -57,4 +48,10 @@ namespace Server.Data
 		}
 	}
 	#endregion
+
+	public class Item
+	{
+		public int id;
+		public int count;
+	}
 }

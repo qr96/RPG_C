@@ -68,7 +68,7 @@ public class MyPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y + 16, transform.position.z - 16);
+        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y + 16f, transform.position.z - 16f);
 
         if (nameTag != null)
             nameTag.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0f, 1.7f, 0f));
@@ -190,6 +190,16 @@ public class MyPlayer : MonoBehaviour
             Managers.Resource.Destroy(chatBalloon.gameObject);
             chatBalloon = null;
         });
+    }
+
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+
+    public void SetAttackDelay(float delay)
+    {
+        this.attackDelay = delay;
     }
 
     #region packet

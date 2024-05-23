@@ -40,7 +40,7 @@ namespace Server.Game
             ObjectType = GameObjectType.Monster;
 
             maxHP = 100;
-            power = 1;
+            power = 5;
 
             sm.SetEvent(MonsterState.Idle,
                 (prev) =>
@@ -114,7 +114,9 @@ namespace Server.Game
         public void OnDamaged(Player attacker, int direction, long damage)
         {
             if (Room == null) return;
+            if (attacker == null) return;
 
+            target = attacker;
             nowHP -= damage;
             if (nowHP <= 0)
             {
@@ -125,7 +127,7 @@ namespace Server.Game
             }
             else
             {
-                sm.SetState(MonsterState.Chase);
+                sm.SetState(MonsterState.Damaged);
             }
             SendOnDamage(attacker, direction, damage);
 

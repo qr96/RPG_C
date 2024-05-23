@@ -1,0 +1,1 @@
+dotnet publish ..\\Server -r linux-x64
