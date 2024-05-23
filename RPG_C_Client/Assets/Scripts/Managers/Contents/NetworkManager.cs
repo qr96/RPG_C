@@ -17,13 +17,22 @@ public class NetworkManager
 
 	public void Init()
 	{
-		// DNS (Domain Name System)
-		string host = Dns.GetHostName();
-		IPHostEntry ipHost = Dns.GetHostEntry(host);
-		IPAddress ipAddr = ipHost.AddressList[0];
-		IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
+        IPAddress ipAddr;
 
-		Connector connector = new Connector();
+		bool ALPHA = false;
+        if (ALPHA)
+        {
+            string host = Dns.GetHostName();
+            IPHostEntry ipHost = Dns.GetHostEntry(host);
+            ipAddr = ipHost.AddressList[0];
+        }
+        else
+        {
+            ipAddr = IPAddress.Parse("180.210.82.243");
+        }
+        IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
+
+        Connector connector = new Connector();
 
 		connector.Connect(endPoint,
 			() => { return _session; },

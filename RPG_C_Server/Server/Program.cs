@@ -42,14 +42,22 @@ namespace Server
 			GameRoom room = RoomManager.Instance.Add(1);
 			TickRoom(room, 100);
 
-			// DNS (Domain Name System)
-			string host = Dns.GetHostName();
-			IPHostEntry ipHost = Dns.GetHostEntry(host);
-			IPAddress ipAddr = ipHost.AddressList[0];
-			IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
+			bool ALPHA = false;
+			IPEndPoint endPoint;
+            if (ALPHA)
+			{
+				string host = Dns.GetHostName();
+				IPHostEntry ipHost = Dns.GetHostEntry(host);
+				IPAddress ipAddr = ipHost.AddressList[0];
+				endPoint = new IPEndPoint(ipAddr, 7777);
+			}
+			else
+			{
+                endPoint = new IPEndPoint(IPAddress.Any, 7777);
+            }
 
-			_listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
-			Console.WriteLine("Listening...");
+            _listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
+			Console.WriteLine("RPG_C Server Start...");
 
             // TODO
             while (true)
