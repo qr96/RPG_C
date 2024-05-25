@@ -191,9 +191,9 @@ class PacketHandler
 
 		// 임시처리
 		Managers.Object.MyPlayer.SetSpeed(200f + 10f * Math.Min(30f, skillLevels[1]));
-        var attackCoolDown = 0.01f * Math.Min(30f, skillLevels[2]);
-        var attackCool = DateTime.Now.AddSeconds(0.5f - attackCoolDown);
-		Managers.Object.MyPlayer.SetAttackDelay(attackCoolDown);
+        var attackCoolDown = 0.01f * Math.Min(30f, skillLevels[3]);
+		var attackCool = 0.5f - attackCoolDown;
+		Managers.Object.MyPlayer.SetAttackDelay(attackCool);
     }
 
 	public static void S_SkillLevelUpHandler(PacketSession session, IMessage packet)

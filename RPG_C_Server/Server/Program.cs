@@ -36,28 +36,21 @@ namespace Server
 
 		static void Main(string[] args)
 		{
-			ConfigManager.LoadConfig();
+			Console.WriteLine("RPG_C Server Started");
+
+            ConfigManager.LoadConfig();
 			DataManager.LoadData();
 
 			GameRoom room = RoomManager.Instance.Add(1);
 			TickRoom(room, 100);
 
-			bool ALPHA = false;
-			IPEndPoint endPoint;
-            if (ALPHA)
-			{
-				string host = Dns.GetHostName();
-				IPHostEntry ipHost = Dns.GetHostEntry(host);
-				IPAddress ipAddr = ipHost.AddressList[0];
-				endPoint = new IPEndPoint(ipAddr, 7777);
-			}
-			else
-			{
-                endPoint = new IPEndPoint(IPAddress.Any, 7777);
-            }
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 7777);
+
+            if (endPoint == null)
+				Console.WriteLine("End point is Null");
 
             _listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
-			Console.WriteLine("RPG_C Server Start...");
+			Console.WriteLine("Server Start...");
 
             // TODO
             while (true)

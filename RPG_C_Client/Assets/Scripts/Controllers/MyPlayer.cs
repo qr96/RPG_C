@@ -76,15 +76,8 @@ public class MyPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (EventSystem.current.currentSelectedGameObject == null)
-        {
-            input.x = Input.GetAxis("Horizontal");
-            input.y = Input.GetAxis("Vertical");
-        }
-        else
-        {
-            input = Vector2.zero;
-        }
+        input.x = Input.GetAxis("Horizontal");
+        input.y = Input.GetAxis("Vertical");
 
         if (DateTime.Now >= attackEnd)
         {

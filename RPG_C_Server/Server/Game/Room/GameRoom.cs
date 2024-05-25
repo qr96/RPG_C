@@ -99,7 +99,10 @@ namespace Server.Game
 					}
 
 					foreach (var m in _monsters.Values)
-						spawnPacket.Objects.Add(m.Info);
+					{
+                        if (m.IsAlive())
+                            spawnPacket.Objects.Add(m.Info);
+                    }
 
                     player.Session.Send(spawnPacket);
 					player.Spawn();

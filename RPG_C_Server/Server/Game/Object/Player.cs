@@ -104,7 +104,7 @@ namespace Server.Game
 
 		public void Attack(Monster target, int direction)
 		{
-			var attackCoolDown = 0.01f * Math.Min(30f, _skillLevels[2]);
+			var attackCoolDown = 0.01f * Math.Min(30f, _skillLevels[3]);
 			attackCool = DateTime.Now.AddSeconds(0.5f - attackCoolDown);
 
             if (_nowMp < 10)

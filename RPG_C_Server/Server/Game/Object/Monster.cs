@@ -45,7 +45,7 @@ namespace Server.Game
             sm.SetEvent(MonsterState.Idle,
                 (prev) =>
                 {
-                    var idleTime = DataManager.Rand.NextDouble() * 4 + 4f;
+                    var idleTime = DataManager.Rand.NextDouble() * 4;
                     idleEndTime = DateTime.Now.AddSeconds(idleTime);
                     SendState();
                 },
@@ -111,6 +111,11 @@ namespace Server.Game
             return nowHP <= 0 && DateTime.Now > respawnTime;
         }
 
+        public bool IsAlive()
+        {
+            return sm.GetState() != MonsterState.Die;
+        }
+
         public void OnDamaged(Player attacker, int direction, long damage)
         {
             if (Room == null) return;
@@ -121,9 +126,9 @@ namespace Server.Game
             if (nowHP <= 0)
             {
                 attacker.AddExp(100);
-                //attacker.AddMoney(100);
                 respawnTime = DateTime.Now.AddSeconds(15f);
                 SendSpawnItem(attacker, new List<ItemInfo>() { new ItemInfo() { ItemCode = 1, Count = 100 } });
+                sm.SetState(MonsterState.Die);
             }
             else
             {

@@ -19,12 +19,10 @@ public class NetworkManager
 	{
         IPAddress ipAddr;
 
-		bool ALPHA = false;
+		bool ALPHA = true;
         if (ALPHA)
         {
-            string host = Dns.GetHostName();
-            IPHostEntry ipHost = Dns.GetHostEntry(host);
-            ipAddr = ipHost.AddressList[0];
+			ipAddr = IPAddress.Loopback;
         }
         else
         {

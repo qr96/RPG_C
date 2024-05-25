@@ -60,7 +60,11 @@ public class Monster : MonoBehaviour
                 if (DateTime.Now > knockBackTime)
                     sm.SetState(MonsterState.Chase);
             });
-
+        sm.SetEvent(MonsterState.Die,
+            (prev) =>
+            {
+                Managers.Object.Remove(Id);
+            }, null, null);
         sm.SetState(MonsterState.Idle);
     }
 
@@ -133,7 +137,7 @@ public class Monster : MonoBehaviour
             hpBar = null;
         }
 
-        Managers.Object.Remove(Id);
+        sm.SetState(MonsterState.Die);
     }
 
     public void RecvMonsterState(S_MonsterState monsterState)
