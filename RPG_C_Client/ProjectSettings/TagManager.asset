@@ -45,3 +45,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Pattern
+    uniqueID: 2003001947
+    locked: 0
+  - name: HID
+    uniqueID: 3813258777
+    locked: 0
+  - name: UI
+    uniqueID: 4022241259
+    locked: 0
