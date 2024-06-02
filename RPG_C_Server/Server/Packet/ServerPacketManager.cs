@@ -63,18 +63,25 @@ class PacketManager
 
 	void MakePacket<T>(PacketSession session, ArraySegment<byte> buffer, ushort id) where T : IMessage, new()
 	{
-		T pkt = new T();
-		pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
+		try
+		{
+            T pkt = new T();
+            pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
 
-		if (CustomHandler != null)
+            if (CustomHandler != null)
+            {
+                CustomHandler.Invoke(session, pkt, id);
+            }
+            else
+            {
+                Action<PacketSession, IMessage> action = null;
+                if (_handler.TryGetValue(id, out action))
+                    action.Invoke(session, pkt);
+            }
+        }
+		catch(Exception ex)
 		{
-			CustomHandler.Invoke(session, pkt, id);
-		}
-		else
-		{
-			Action<PacketSession, IMessage> action = null;
-			if (_handler.TryGetValue(id, out action))
-				action.Invoke(session, pkt);
+			Console.WriteLine($"[{DateTime.Now}]{ex}");
 		}
 	}
 

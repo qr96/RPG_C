@@ -19,7 +19,7 @@ public class NetworkManager
 	{
         IPAddress ipAddr;
 
-		bool ALPHA = true;
+		bool ALPHA = false;
         if (ALPHA)
         {
 			ipAddr = IPAddress.Loopback;
