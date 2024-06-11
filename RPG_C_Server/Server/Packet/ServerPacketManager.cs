@@ -81,8 +81,9 @@ class PacketManager
         }
 		catch(Exception ex)
 		{
-			Console.WriteLine($"[{DateTime.Now}]{ex}");
-		}
+			Console.WriteLine($"[{DateTime.Now}] {ex}");
+			session.Disconnect();
+        }
 	}
 
 	public Action<PacketSession, IMessage> GetPacketHandler(ushort id)
